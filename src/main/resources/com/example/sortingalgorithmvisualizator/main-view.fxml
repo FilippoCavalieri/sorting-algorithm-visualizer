@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sortingalgorithmvisualizator.MainController">
+   <top>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <buttons>
+            <Slider />
+            <SplitMenuButton mnemonicParsing="false" text="Sorting algorithm">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onClick" text="Bubble sort" />
+                <MenuItem mnemonicParsing="false" text="Merge sort" />
+              </items>
+            </SplitMenuButton>
+            <Button mnemonicParsing="false" text="Sort" />
+          <Button mnemonicParsing="false" text="Reset" />
+        </buttons>
+      </ButtonBar>
+   </top>
+</BorderPane>
