@@ -21,13 +21,50 @@ public class MainController {
     @FXML
     private NumberAxis yAxis;
     @FXML
-    private Slider arraySizeSlider;
+    private Slider arraySizeSlider, arrayRangeSlider;
     @FXML
     private SplitMenuButton sortingAlgorithmMenu;
     @FXML
     private Button sortButton, resetButton;
     @FXML
-    private Label arraySizeValueLabel;
+    private Label arraySizeValueLabel, arrayRangeValueLabel;
+    private final int DEFAULT_ARRAY_SIZE = 50;
+    private final int DEFAULT_ARRAY_RANGE = 100;
+    private int barsNumber, valueRange;
+    private String sortingAlgorithm;
+    @FXML
+    public void initialize() {
+        xAxis = new CategoryAxis();
+        yAxis = new NumberAxis();
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
 
+        arraySizeSlider.setValue(DEFAULT_ARRAY_SIZE);
+        arrayRangeSlider.setValue(DEFAULT_ARRAY_RANGE);
+
+        barsNumber = DEFAULT_ARRAY_SIZE;
+        valueRange = DEFAULT_ARRAY_RANGE;
+
+        initializeBarChart();
+        fillArray();
+    }
+
+    public void initializeBarChart(){
+        barChart.setBarGap(0);
+    }
+
+    public void fillArray(){
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+
+        for(int i = 0; i < barsNumber; i++) {
+            series.getData().add(new XYChart.Data<>(Integer.toString(i + 1), new Random().nextInt(valueRange)));
+        }
+
+        barChart.getData().add(series);
+    }
+    @FXML
+    public void handleReset(){
+        barChart.getData().clear();
+        fillArray();
+    }
 
 }
