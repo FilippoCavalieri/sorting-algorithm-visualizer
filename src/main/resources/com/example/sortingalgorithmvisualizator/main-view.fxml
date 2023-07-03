@@ -23,9 +23,9 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.00003662109376" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.99996337890624" minWidth="10.0" prefWidth="81.6" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.99998779296874" minWidth="10.0" prefWidth="86.4000244140625" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.79996337890623" minWidth="10.0" prefWidth="175.20001220703125" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.79996337890623" minWidth="10.0" prefWidth="153.6000366210938" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.79996337890623" minWidth="10.0" prefWidth="77.00007324218745" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="76.99997558593748" minWidth="10.0" prefWidth="72.19992675781248" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
@@ -42,11 +42,11 @@
                 <MenuItem mnemonicParsing="false" text="Merge sort" />
               </items>
             </SplitMenuButton>
-            <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Sort" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Slider fx:id="arraySizeSlider" maxWidth="-Infinity" prefHeight="14.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" text="Sort" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Slider fx:id="arraySizeSlider" max="200.0" maxWidth="-Infinity" prefHeight="14.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label maxWidth="-Infinity" minWidth="40.0" prefHeight="18.0" prefWidth="66.0" text="Array Size" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label fx:id="arraySizeValueLabel" text="Value" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Slider fx:id="arrayRangeSlider" prefHeight="14.0" prefWidth="75.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Slider fx:id="arrayRangeSlider" max="1000.0" prefHeight="14.0" prefWidth="75.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label fx:id="arrayRangeValueLabel" text="Value" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label text="Value Range" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
          </children>
