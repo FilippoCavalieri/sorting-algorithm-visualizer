@@ -19,8 +19,9 @@
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints fx:id="arraySizeValueLabel" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -29,8 +30,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-          <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Reset" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <SplitMenuButton fx:id="sortingAlgorithmMenu" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Sorting algorithm" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+          <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Reset" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <SplitMenuButton fx:id="sortingAlgorithmMenu" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Sorting algorithm" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
               <items>
                   <MenuItem mnemonicParsing="false" text="Naive sort" />
                 <MenuItem mnemonicParsing="false" text="Bubble sort" />
@@ -39,10 +40,10 @@
                 <MenuItem mnemonicParsing="false" text="Merge sort" />
               </items>
             </SplitMenuButton>
-            <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Sort" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Sort" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Slider fx:id="arraySizeSlider" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
             <Label maxWidth="84.0" minWidth="40.0" prefHeight="17.0" prefWidth="84.0" text="Array Size" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-            <Label fx:id="arraySizeValueLabel" alignment="CENTER" text="Value" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="arraySizeValueLabel" text="Value" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </top>
