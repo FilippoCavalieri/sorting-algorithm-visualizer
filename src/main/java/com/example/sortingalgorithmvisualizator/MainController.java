@@ -14,15 +14,20 @@ import javafx.scene.control.SplitMenuButton;
 import java.util.*;
 
 public class MainController {
-    @FXML private BarChart<String, Integer> barChart;
-    @FXML private CategoryAxis xAxis;
-    @FXML private NumberAxis yAxis;
-    @FXML private Slider arraySizeSlider;
-    @FXML private SplitMenuButton sortingAlgorithmMenu;
-    @FXML private Button sortButton, resetButton;
-    @FXML private Label arraySizeValueLabel;
+    @FXML
+    private BarChart<String, Integer> barChart;
+    @FXML
+    private CategoryAxis xAxis;
+    @FXML
+    private NumberAxis yAxis;
+    @FXML
+    private Slider arraySizeSlider;
+    @FXML
+    private SplitMenuButton sortingAlgorithmMenu;
+    @FXML
+    private Button sortButton, resetButton;
+    @FXML
+    private Label arraySizeValueLabel;
 
-    public void handleNewArray() throws InterruptedException {
 
-    }
 }

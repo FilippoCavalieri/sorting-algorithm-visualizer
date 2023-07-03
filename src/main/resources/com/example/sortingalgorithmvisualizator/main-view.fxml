@@ -32,7 +32,7 @@
             <SplitMenuButton mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Sorting algorithm" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
               <items>
                   <MenuItem mnemonicParsing="false" text="Naive sort" />
-                <MenuItem mnemonicParsing="false" onAction="#onClick" text="Bubble sort" />
+                <MenuItem mnemonicParsing="false" text="Bubble sort" />
                   <MenuItem mnemonicParsing="false" text="Insertion sort" />
                   <MenuItem mnemonicParsing="false" text="Quick sort" />
                 <MenuItem mnemonicParsing="false" text="Merge sort" />
