@@ -3,31 +3,26 @@ package com.example.sortingalgorithmvisualizator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.SplitMenuButton;
 
 import java.util.*;
 
 public class MainController {
     @FXML private BarChart<String, Integer> barChart;
-    @FXML
-    void onClick(ActionEvent event) {
-
-    }
+    @FXML private CategoryAxis xAxis;
+    @FXML private NumberAxis yAxis;
+    @FXML private Slider arraySizeSlider;
+    @FXML private SplitMenuButton sortingAlgorithmMenu;
+    @FXML private Button sortButton, resetButton;
+    @FXML private Label arraySizeValueLabel;
 
     public void handleNewArray() throws InterruptedException {
-        // Qui sarebbe necessario inserire il valore dato dallo slider
-        int[] elements = new int[12];
-        Random rnd = new Random();
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = rnd.nextInt(101);
-        }
 
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-        // Create a XYChart.Data object for each element. Add it to the series.
-        for (int i = 0; i < elements.length; i++) {
-            series.getData().add(new XYChart.Data<>(String.valueOf(elements[i]),elements[i]));
-        }
-        barChart.getData().clear();
-        barChart.getData().add(series);
     }
 }
