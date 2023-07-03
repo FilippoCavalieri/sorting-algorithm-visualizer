@@ -42,7 +42,7 @@
             <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Sort" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Slider fx:id="arraySizeSlider" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
             <Label maxWidth="84.0" minWidth="40.0" prefHeight="17.0" prefWidth="84.0" text="Array Size" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-            <Label alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="arraySizeValueLabel" alignment="CENTER" text="Value" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </top>
