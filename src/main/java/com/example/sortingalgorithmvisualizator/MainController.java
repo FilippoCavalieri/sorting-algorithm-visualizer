@@ -96,37 +96,45 @@ public class MainController {
     public void handleSort() {
         resetButton.setDisable(true);
         sortButton.setDisable(true);
-        try{
+        try {
             String sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
             System.out.println(sortingAlgorithm);
-            switch (sortingAlgorithm) {
-                case "Selection sort" -> {
-                    System.out.println(barChart.getData().get(0).getData().toString());
-                    SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
+            Task task = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    switch (sortingAlgorithm) {
+                        case "Selection sort" -> {
+                            System.out.println(barChart.getData().get(0).getData().toString());
+                            SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
+                        }
+                        case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
+                        case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
+                        case "Quick sort" ->
+                                SortingAlgorithms.quickSort(barChart.getData().get(0).getData(), 0, barChart.getData().get(0).getData().size() - 1);
+                        case "Merge sort" ->
+                                SortingAlgorithms.mergeSort(barChart.getData().get(0).getData(), 0, barChart.getData().get(0).getData().size() - 1);
+                    }
+                    return null;
                 }
-                case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
-                case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
-                case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData());
-                case "Merge sort" -> SortingAlgorithms.mergeSort(barChart.getData().get(0).getData());
-            }
-        }
-        catch (Exception e){
+            };
+            Thread thread = new Thread(task);
+            thread.start();
+        } catch (Exception e) {
             showNoSelectedAlgorithmAlert();
-        }
-        finally{
+        } finally {
             resetButton.setDisable(false);
         }
     }
 
-    public void showNoSelectedAlgorithmAlert(){
+    public void showNoSelectedAlgorithmAlert() {
         sortButton.setDisable(false);
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("No Selection");
         alert.setHeaderText("No algorithm selected");
         alert.setContentText("Please select an algorithm in the check box.");
         alert.showAndWait();
-
     }
+
     public static class SortingAlgorithms {
         private static void swap(ObservableList<XYChart.Data<String, Integer>> list, int index1, int index2) {
             Integer tmp = list.get(index1).getYValue();
@@ -145,81 +153,123 @@ public class MainController {
             return maxIndex;
         }
 
+        private static void insMinore(ObservableList<XYChart.Data<String, Integer>> list, int lastpos) {
+            int i = lastpos - 1;
+            int lastValue = list.get(lastpos).getYValue();
+            for (; i >= 0 && lastValue < list.get(i).getYValue(); i--) {
+                delay();
+                swap(list, i + 1, i);
+            }
+            list.get(i + 1).setYValue(lastValue);
+        }
+
         public static void selectionSort(ObservableList<XYChart.Data<String, Integer>> list) {
-            Task task = new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    int maxIndex;
-                    for (int listSize = list.size(); listSize > 1; listSize--) {
-                        maxIndex = foundMax(list, listSize);
-                        if (maxIndex < listSize - 1) {
-                            delay();
-                            swap(list, maxIndex, listSize - 1);
-                        }
-                    }
-                    return null;
+            int maxIndex;
+            for (int listSize = list.size(); listSize > 1; listSize--) {
+                maxIndex = foundMax(list, listSize);
+                if (maxIndex < listSize - 1) {
+                    delay();
+                    swap(list, maxIndex, listSize - 1);
                 }
-            };
-            Thread thread = new Thread(task);
-            thread.start();
+            }
         }
 
         public static void bubbleSort(ObservableList<XYChart.Data<String, Integer>> list) {
-            Task task = new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    boolean ordered = false;
-                    for (int listSize = list.size(); listSize > 1 && !ordered; listSize--) {
-                        ordered = true; //Hp: the list is ordered
-                        for (int i = 0; i < listSize - 1; i++) {
-                            if (list.get(i).getYValue().compareTo(list.get(i + 1).getYValue()) > 0) {
-                                delay();
-                                swap(list, i, i + 1);
-                                ordered = false;
-                            }
-                        }
+            boolean ordered = false;
+            for (int listSize = list.size(); listSize > 1 && !ordered; listSize--) {
+                ordered = true; //Hp: the list is ordered
+                for (int i = 0; i < listSize - 1; i++) {
+                    if (list.get(i).getYValue().compareTo(list.get(i + 1).getYValue()) > 0) {
+                        delay();
+                        swap(list, i, i + 1);
+                        ordered = false;
                     }
-                    return null;
                 }
-            };
-            Thread thread = new Thread(task);
-            thread.start();
+            }
         }
 
         public static void insertionSort(ObservableList<XYChart.Data<String, Integer>> list) {
-            Task task = new Task() {
-                @Override
-                protected Void call() throws Exception {
-
-                    return null;
-                }
-            };
-            Thread thread = new Thread(task);
-            thread.start();
+            for (int i = 1; i < list.size(); i++) {
+                insMinore(list, i);
+            }
         }
 
-        public static void quickSort(ObservableList<XYChart.Data<String, Integer>> list) {
-            Task task = new Task() {
-                @Override
-                protected Void call() throws Exception {
-
-                    return null;
-                }
-            };
-            Thread thread = new Thread(task);
-            thread.start();
+        public static void quickSort(ObservableList<XYChart.Data<String, Integer>> list, int first, int last) {
+            int i, j, pivot;
+            if (first < last) {
+                i = first;
+                j = last;
+                pivot = list.get((first + last) / 2).getYValue();
+                do {
+                    for (; list.get(i).getYValue() < pivot; i++)
+                        ;
+                    System.out.println(i);
+                    System.out.println(j);
+                    for (; list.get(j).getYValue() > pivot; j--)
+                        ;
+                    System.out.println(i);
+                    System.out.println(j);
+                    if (i <= j) {
+                        delay();
+                        swap(list, i, j);
+                        i++;
+                        j--;
+                    }
+                } while (i <= j);
+                quickSort(list, first, j);
+                quickSort(list, i, last);
+            }
         }
 
-        public static void mergeSort(ObservableList<XYChart.Data<String, Integer>> list) {
-            Task task = new Task() {
-                @Override
-                protected Void call() throws Exception {
+        public static void merge(ObservableList<XYChart.Data<String, Integer>> list, int beg, int mid, int end) {
+            int i, j, k;
+            int n1 = mid - beg + 1;
+            int n2 = end - mid;
 
-                    return null;
+            List<XYChart.Data<String, Integer>> leftTmp = new ArrayList<>(n1);
+            List<XYChart.Data<String, Integer>> rightTmp = new ArrayList<>(n2);
+
+            for (i = 0; i < n1; i++)
+                leftTmp.get(i).setYValue(list.get(beg + 1).getYValue());
+
+            for (j = 0; j < n2; j++)
+                rightTmp.get(j).setYValue(list.get(mid + 1 + j).getYValue());
+
+            i = 0; /* initial index of leftTmp */
+            j = 0; /* initial index of rightTmp */
+            k = beg;  /* initial index of list */
+
+            while (i < n1 && j < n2) {
+                if (leftTmp.get(i).getYValue() <= rightTmp.get(j).getYValue()) {
+                    list.get(k).setYValue(leftTmp.get(i).getYValue());
+                    i++;
+                } else {
+                    list.get(k).setYValue(rightTmp.get(j).getYValue());
+                    j++;
                 }
-            };
-            Thread thread = new Thread(task);
-            thread.start();
+                k++;
+            }
+
+            while (i < n1) {
+                list.get(k).setYValue(leftTmp.get(i).getYValue());
+                i++;
+                k++;
+            }
+
+            while (j < n2) {
+                list.get(k).setYValue(rightTmp.get(j).getYValue());
+                j++;
+                k++;
+            }
+        }
+
+        public static void mergeSort(ObservableList<XYChart.Data<String, Integer>> list, int first, int last) {
+            if (first < last) {
+                int mid = (first + last) / 2;
+                mergeSort(list, first, mid);
+                mergeSort(list, mid + 1, last);
+                merge(list, first, mid, last);
+            }
         }
     }
 }
