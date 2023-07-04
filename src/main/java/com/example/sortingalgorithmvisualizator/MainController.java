@@ -1,6 +1,7 @@
 package com.example.sortingalgorithmvisualizator;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -22,11 +23,11 @@ public class MainController {
     @FXML
     private ComboBox sortingAlgorithmChoice;
     @FXML
-    private Button sortButton, resetButton;
-    @FXML
     private Label arraySizeValueLabel, arrayRangeValueLabel;
-    private final int DEFAULT_ARRAY_SIZE = 50;
-    private final int DEFAULT_ARRAY_RANGE = 100;
+    private static final int DEFAULT_ARRAY_SIZE = 50;
+    private static final int DEFAULT_ARRAY_RANGE = 100;
+    private static final long DEFAULT_DELAY = 100;
+
     private int barsNumber, valueRange;
 
     @FXML
@@ -72,6 +73,14 @@ public class MainController {
         barChart.getData().add(series);
     }
 
+    public static void delay() {
+        try {
+            Thread.sleep(DEFAULT_DELAY);
+        } catch (InterruptedException ignored) {
+
+        }
+    }
+
     @FXML
     public void handleReset() {
         barChart.getData().clear();
@@ -107,28 +116,69 @@ public class MainController {
         }
 
         public static void selectionSort(ObservableList<XYChart.Data<String, Integer>> list) {
-            int p;
-            for(int listSize = list.size(); listSize > 1; listSize--) {
-                p = foundMax(list, listSize);
-                if (p < listSize - 1)
-                    swap(list, p, listSize - 1);
-            }
+            Task task = new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    int p;
+                    for (int listSize = list.size(); listSize > 1; listSize--) {
+                        p = foundMax(list, listSize);
+                        if (p < listSize - 1)
+                            delay();
+                        swap(list, p, listSize - 1);
+                    }
+                    return null;
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
         }
 
         public static void bubbleSort(ObservableList<XYChart.Data<String, Integer>> list) {
+            Task task = new Task() {
+                @Override
+                protected Void call() throws Exception {
 
+                    return null;
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
         }
 
         public static void insertionSort(ObservableList<XYChart.Data<String, Integer>> list) {
+            Task task = new Task() {
+                @Override
+                protected Void call() throws Exception {
 
+                    return null;
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
         }
 
         public static void quickSort(ObservableList<XYChart.Data<String, Integer>> list) {
+            Task task = new Task() {
+                @Override
+                protected Void call() throws Exception {
 
+                    return null;
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
         }
 
         public static void mergeSort(ObservableList<XYChart.Data<String, Integer>> list) {
+            Task task = new Task() {
+                @Override
+                protected Void call() throws Exception {
 
+                    return null;
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
         }
     }
 }
