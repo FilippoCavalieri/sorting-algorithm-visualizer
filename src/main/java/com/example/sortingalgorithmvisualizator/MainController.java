@@ -9,6 +9,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class MainController {
@@ -24,6 +25,9 @@ public class MainController {
     private ComboBox sortingAlgorithmChoice;
     @FXML
     private Label arraySizeValueLabel, arrayRangeValueLabel;
+    @FXML
+    private Button sortButton, resetButton;
+
     private static final int DEFAULT_ARRAY_SIZE = 50;
     private static final int DEFAULT_ARRAY_RANGE = 100;
     private static final long DEFAULT_DELAY = 100;
@@ -67,7 +71,7 @@ public class MainController {
     public void fillArray() {
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         for (int i = 0; i < barsNumber; i++) {
-            series.getData().add(new XYChart.Data<>(Integer.toString(i + 1), new Random().nextInt(valueRange)));
+            series.getData().add(new XYChart.Data<>(Integer.toString(i + 1), new Random().nextInt(1, valueRange + 1)));
         }
 
         barChart.getData().add(series);
@@ -85,46 +89,73 @@ public class MainController {
     public void handleReset() {
         barChart.getData().clear();
         fillArray();
+        sortButton.setDisable(false);
     }
 
     @FXML
     public void handleSort() {
-        String sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
-        switch (sortingAlgorithm) {
-            case "Selection sort" -> SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
-            case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
-            case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
-            case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData());
-            case "Merge sort" -> SortingAlgorithms.mergeSort(barChart.getData().get(0).getData());
+        resetButton.setDisable(true);
+        sortButton.setDisable(true);
+        try{
+            String sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
+            System.out.println(sortingAlgorithm);
+            switch (sortingAlgorithm) {
+                case "Selection sort" -> {
+                    System.out.println(barChart.getData().get(0).getData().toString());
+                    SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
+                }
+                case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
+                case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
+                case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData());
+                case "Merge sort" -> SortingAlgorithms.mergeSort(barChart.getData().get(0).getData());
+            }
+        }
+        catch (Exception e){
+            showNoSelectedAlgorithmAlert();
+        }
+        finally{
+            resetButton.setDisable(false);
         }
     }
 
-    public class SortingAlgorithms {
+    public void showNoSelectedAlgorithmAlert(){
+        sortButton.setDisable(false);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("No Selection");
+        alert.setHeaderText("No algorithm selected");
+        alert.setContentText("Please select an algorithm in the check box.");
+        alert.showAndWait();
+
+    }
+    public static class SortingAlgorithms {
         private static void swap(ObservableList<XYChart.Data<String, Integer>> list, int index1, int index2) {
             Integer tmp = list.get(index1).getYValue();
             list.get(index1).setYValue(list.get(index2).getYValue());
             list.get(index2).setYValue(tmp);
         }
 
-        private static int foundMax(ObservableList<XYChart.Data<String, Integer>> list, int n) {
-            int p = 0; //Hp: first element is the max
-            for (int i = 1; i < n; ++i) {
-                if (list.get(i).getYValue().compareTo(list.get(p).getYValue()) > 0)
-                    p = i;
+        private static int foundMax(ObservableList<XYChart.Data<String, Integer>> list, int range) {
+            int maxIndex = 0; //Hp: first element is the max
+            for (int i = 1; i < range; ++i) {
+                if (list.get(i).getYValue().compareTo(list.get(maxIndex).getYValue()) > 0) {
+                    delay();
+                    maxIndex = i;
+                }
             }
-            return p;
+            return maxIndex;
         }
 
         public static void selectionSort(ObservableList<XYChart.Data<String, Integer>> list) {
             Task task = new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    int p;
+                    int maxIndex;
                     for (int listSize = list.size(); listSize > 1; listSize--) {
-                        p = foundMax(list, listSize);
-                        if (p < listSize - 1)
+                        maxIndex = foundMax(list, listSize);
+                        if (maxIndex < listSize - 1) {
                             delay();
-                        swap(list, p, listSize - 1);
+                            swap(list, maxIndex, listSize - 1);
+                        }
                     }
                     return null;
                 }
@@ -137,7 +168,17 @@ public class MainController {
             Task task = new Task() {
                 @Override
                 protected Void call() throws Exception {
-
+                    boolean ordered = false;
+                    for (int listSize = list.size(); listSize > 1 && !ordered; listSize--) {
+                        ordered = true; //Hp: the list is ordered
+                        for (int i = 0; i < listSize - 1; i++) {
+                            if (list.get(i).getYValue().compareTo(list.get(i + 1).getYValue()) > 0) {
+                                delay();
+                                swap(list, i, i + 1);
+                                ordered = false;
+                            }
+                        }
+                    }
                     return null;
                 }
             };

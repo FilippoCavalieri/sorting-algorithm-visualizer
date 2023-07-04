@@ -46,7 +46,7 @@
               </rowConstraints>
                <children>
                   <Label text="Value Range" GridPane.halignment="CENTER" />
-                  <Slider fx:id="arrayRangeSlider" max="1000.0" prefHeight="14.0" prefWidth="111.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Slider fx:id="arrayRangeSlider" max="1000.0" min="2.0" prefHeight="14.0" prefWidth="111.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Label fx:id="arrayRangeValueLabel" text="Value" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
@@ -61,7 +61,7 @@
               </rowConstraints>
                <children>
                   <Label maxWidth="-Infinity" minWidth="40.0" prefHeight="18.0" prefWidth="66.0" text="Array Size" GridPane.halignment="CENTER" />
-                  <Slider fx:id="arraySizeSlider" max="200.0" prefHeight="14.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Slider fx:id="arraySizeSlider" max="200.0" min="2.0" prefHeight="14.0" prefWidth="65.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Label fx:id="arraySizeValueLabel" text="Value" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
