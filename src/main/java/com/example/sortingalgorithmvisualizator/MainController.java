@@ -1,15 +1,11 @@
 package com.example.sortingalgorithmvisualizator;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.*;
 
 import java.util.*;
 
@@ -23,7 +19,7 @@ public class MainController {
     @FXML
     private Slider arraySizeSlider, arrayRangeSlider;
     @FXML
-    private SplitMenuButton sortingAlgorithmMenu;
+    private ComboBox sortingAlgorithmChoice;
     @FXML
     private Button sortButton, resetButton;
     @FXML
@@ -31,7 +27,6 @@ public class MainController {
     private final int DEFAULT_ARRAY_SIZE = 50;
     private final int DEFAULT_ARRAY_RANGE = 100;
     private int barsNumber, valueRange;
-    private String sortingAlgorithm;
 
     @FXML
     public void initialize() {
@@ -59,6 +54,9 @@ public class MainController {
             valueRange = (int) arrayRangeSlider.getValue();
             arrayRangeValueLabel.setText(Integer.toString(valueRange));
         });
+
+        sortingAlgorithmChoice.getItems().addAll("Selection sort", "Bubble sort", "Insertion sort", "Quick sort",
+                "Merge sort");
     }
 
     public void initializeBarChart() {
@@ -78,5 +76,17 @@ public class MainController {
     public void handleReset() {
         barChart.getData().clear();
         fillArray();
+    }
+
+    @FXML
+    public void handleSort(){
+        String sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
+        switch(sortingAlgorithm){
+            case "Selection sort" -> SortingAlgorithms.selectionSort(barChart.getData());
+            case "Bubble sort" -> SortingAlgorithms.bubbleSort();
+            case "Insertion sort" -> SortingAlgorithms.insertionSort();
+            case "Quick sort" -> SortingAlgorithms.quickSort();
+            case "Merge sort" -> SortingAlgorithms.mergeSort();
+        }
     }
 }

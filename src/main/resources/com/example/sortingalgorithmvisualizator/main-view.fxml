@@ -4,10 +4,9 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -33,22 +32,14 @@
         </rowConstraints>
          <children>
           <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="67.0" text="Reset" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <SplitMenuButton fx:id="sortingAlgorithmMenu" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Sorting algorithm" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-              <items>
-                  <MenuItem mnemonicParsing="false" text="Naive sort" />
-                <MenuItem mnemonicParsing="false" text="Bubble sort" />
-                  <MenuItem mnemonicParsing="false" text="Insertion sort" />
-                  <MenuItem mnemonicParsing="false" text="Quick sort" />
-                <MenuItem mnemonicParsing="false" text="Merge sort" />
-              </items>
-            </SplitMenuButton>
-            <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" text="Sort" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="sortButton" mnemonicParsing="false" onAction="#handleSort" prefHeight="26.0" prefWidth="66.0" text="Sort" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Slider fx:id="arraySizeSlider" max="200.0" maxWidth="-Infinity" prefHeight="14.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label maxWidth="-Infinity" minWidth="40.0" prefHeight="18.0" prefWidth="66.0" text="Array Size" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label fx:id="arraySizeValueLabel" text="Value" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Slider fx:id="arrayRangeSlider" max="1000.0" prefHeight="14.0" prefWidth="75.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label fx:id="arrayRangeValueLabel" text="Value" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Label text="Value Range" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <ComboBox fx:id="sortingAlgorithmChoice" prefWidth="150.0" promptText="Sorting Algorithms" GridPane.columnIndex="6" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </top>
