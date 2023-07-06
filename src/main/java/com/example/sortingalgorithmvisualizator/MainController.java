@@ -120,7 +120,7 @@ public class MainController {
                         default -> throw new Exception();
                     }
                 } catch (Exception e) {
-                    e.getMessage();
+                    e.printStackTrace();
                 } finally {
                     resetButton.setDisable(false);
                 }
