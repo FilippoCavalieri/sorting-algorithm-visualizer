@@ -98,7 +98,7 @@ public class MainController {
 
     @FXML
     public void handleSort() {
-        //resetButton.setDisable(true);
+        resetButton.setDisable(true);
         sortButton.setDisable(true);
         try{
             sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
