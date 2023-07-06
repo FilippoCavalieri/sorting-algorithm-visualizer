@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -12,10 +11,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
-import java.net.URL;
 import java.util.*;
 
-public class MainController implements Initializable {
+public class MainController {
 
     @FXML
     private BorderPane pane;
@@ -27,21 +25,20 @@ public class MainController implements Initializable {
     private Label arraySizeValueLabel, arrayRangeValueLabel;
     @FXML
     private Button sortButton, resetButton;
+
     private BarChart<String, Number> barChart;
-
     private CategoryAxis xAxis;
-
     private NumberAxis yAxis;
 
     private static final int DEFAULT_ARRAY_SIZE = 50;
     private static final int DEFAULT_ARRAY_RANGE = 100;
-    private static final long DEFAULT_DELAY = 100;
+    private static final long DEFAULT_DELAY = 80;
 
     private int barsNumber, valueRange;
+    private String sortingAlgorithm;
 
     @FXML
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
         barChart = new BarChart<>(xAxis, yAxis);
@@ -101,28 +98,29 @@ public class MainController implements Initializable {
 
     @FXML
     public void handleSort() {
-        resetButton.setDisable(true);
+        //resetButton.setDisable(true);
         sortButton.setDisable(true);
-        String sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
-        System.out.println(sortingAlgorithm);
+        try{
+            sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
+        }catch(Exception e){
+            showNoSelectedAlgorithmAlert();
+        }
         Task task = new Task() {
             @Override
-            protected Object call() throws Exception{
+            protected Object call() {
                 try {
                     switch (sortingAlgorithm) {
-                        case "Selection sort" -> {
-                            SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
-                        }
+                        case "Selection sort" -> SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
                         case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
                         case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
-                        case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData(), 0,
-                                barChart.getData().get(0).getData().size() - 1);
+                        case "Quick sort" ->
+                                SortingAlgorithms.quickSort(barChart.getData().get(0).getData(), 0, barChart.getData().get(0).getData().size() - 1);
                         case "Merge sort" ->
                                 SortingAlgorithms.mergeSort(barChart.getData().get(0).getData(), 0, barChart.getData().get(0).getData().size() - 1);
                         default -> throw new Exception();
                     }
                 } catch (Exception e) {
-                    showNoSelectedAlgorithmAlert();
+                    e.getMessage();
                 } finally {
                     resetButton.setDisable(false);
                 }
@@ -210,8 +208,10 @@ public class MainController implements Initializable {
                 pivot = list.get((first + last) / 2).getYValue().intValue();
 
                 do {
-                    for (; list.get(i).getYValue().intValue() < pivot; i++);
-                    for (; list.get(j).getYValue().intValue() > pivot; j--);
+                    for (; list.get(i).getYValue().intValue() < pivot; i++)
+                        ;
+                    for (; list.get(j).getYValue().intValue() > pivot; j--)
+                        ;
 
                     if (i <= j) {
                         delay();
