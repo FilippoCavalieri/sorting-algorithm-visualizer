@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,15 +15,18 @@
       <GridPane prefHeight="77.0" prefWidth="927.0" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66666666666666" minWidth="10.0" prefWidth="21.00002225240072" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.66666475931802" minWidth="10.0" prefWidth="191.3333740234375" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66666666666666" minWidth="10.0" prefWidth="21.6666259765625" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.66668192545575" minWidth="10.0" prefWidth="211.00002034505212" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="17.666646321614564" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="121.66666666666663" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="10.0" prefWidth="168.33333333333337" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="10.0" prefWidth="35.33329264322913" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.3333740234375" minWidth="10.0" prefWidth="110.33331298828125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.33335367838538" minWidth="10.0" prefWidth="93.66668701171875" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.66666475931802" minWidth="10.0" prefWidth="169.33333333333334" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66666666666666" minWidth="5.333333333333343" prefWidth="16.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.66668192545575" minWidth="10.0" prefWidth="178.33335367838544" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="10.33332316080731" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="78.33334350585938" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="87.00002034505206" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="0.0" prefWidth="5.666646321614621" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="105.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="10.0" prefWidth="95.66666666666663" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="10.0" prefWidth="17.33329264322913" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.3333740234375" minWidth="10.0" prefWidth="79.33329264322913" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.33335367838538" minWidth="10.0" prefWidth="82.3333740234375" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.6666259765625" minWidth="10.0" prefWidth="20.66666666666663" />
         </columnConstraints>
         <rowConstraints>
@@ -30,9 +34,9 @@
           <RowConstraints maxHeight="316.6666704813639" minHeight="0.0" prefHeight="316.6666704813639" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-          <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="67.0" text="Reset" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="sortButton" mnemonicParsing="false" onAction="#handleSort" prefHeight="26.0" prefWidth="66.0" text="Sort" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <ComboBox fx:id="sortingAlgorithmChoice" prefWidth="150.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+          <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="67.0" text="Reset" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="sortButton" mnemonicParsing="false" onAction="#handleSort" prefHeight="26.0" prefWidth="66.0" text="Sort" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <ComboBox fx:id="sortingAlgorithmChoice" prefWidth="150.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <GridPane prefHeight="32.0" prefWidth="194.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.3333740234375" minWidth="10.0" prefWidth="80.66668701171875" />
@@ -63,7 +67,9 @@
                   <Label fx:id="arraySizeValueLabel" text="Value" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
-            <Label text="Sorting Algorithms" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label text="Sorting Algorithms" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label text="Delay (in ms)" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Spinner fx:id="delayPicker" editable="true" GridPane.columnIndex="6" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </top>

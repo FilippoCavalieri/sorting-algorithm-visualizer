@@ -1,5 +1,9 @@
 package com.example.sortingalgorithmvisualizator;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -25,16 +29,20 @@ public class MainController {
     private Label arraySizeValueLabel, arrayRangeValueLabel;
     @FXML
     private Button sortButton, resetButton;
+    @FXML
+    private Spinner<Integer> delayPicker;
+
+    private static final int DEFAULT_ARRAY_SIZE = 50;
+    private static final int DEFAULT_ARRAY_RANGE = 100;
+    private static final int MIN_DELAY = 0;
+    private static final int DEFAULT_DELAY = 80;
+    private static final int MAX_DELAY = 1000;
 
     private BarChart<String, Number> barChart;
     private CategoryAxis xAxis;
     private NumberAxis yAxis;
-
-    private static final int DEFAULT_ARRAY_SIZE = 50;
-    private static final int DEFAULT_ARRAY_RANGE = 100;
-    private static final long DEFAULT_DELAY = 80;
-
     private int barsNumber, valueRange;
+    private static long currentDelay;
     private String sortingAlgorithm;
 
     @FXML
@@ -65,6 +73,12 @@ public class MainController {
         });
 
         sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
+
+        SpinnerValueFactory<Integer> spinnerValueFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(MIN_DELAY, MAX_DELAY);
+        spinnerValueFactory.setValue(DEFAULT_DELAY);
+        delayPicker.setValueFactory(spinnerValueFactory);
+        delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> currentDelay = delayPicker.getValue());
     }
 
     public void initializeBarChart() {
@@ -83,7 +97,7 @@ public class MainController {
 
     public static void delay() {
         try {
-            Thread.sleep(DEFAULT_DELAY);
+            Thread.sleep(currentDelay);
         } catch (InterruptedException ignored) {
 
         }
