@@ -1,32 +1,37 @@
 package com.example.sortingalgorithmvisualizator;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 
-import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.*;
 
-public class MainController {
+public class MainController implements Initializable {
+
     @FXML
-    private BarChart<String, Integer> barChart;
-    @FXML
-    private CategoryAxis xAxis;
-    @FXML
-    private NumberAxis yAxis;
+    private BorderPane pane;
     @FXML
     private Slider arraySizeSlider, arrayRangeSlider;
     @FXML
-    private ComboBox sortingAlgorithmChoice;
+    private ComboBox<String> sortingAlgorithmChoice;
     @FXML
     private Label arraySizeValueLabel, arrayRangeValueLabel;
     @FXML
     private Button sortButton, resetButton;
+    private BarChart<String, Number> barChart;
+
+    private CategoryAxis xAxis;
+
+    private NumberAxis yAxis;
 
     private static final int DEFAULT_ARRAY_SIZE = 50;
     private static final int DEFAULT_ARRAY_RANGE = 100;
@@ -35,10 +40,11 @@ public class MainController {
     private int barsNumber, valueRange;
 
     @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
-        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        barChart = new BarChart<>(xAxis, yAxis);
 
         arraySizeSlider.setValue(DEFAULT_ARRAY_SIZE);
         arraySizeValueLabel.setText(Integer.toString(DEFAULT_ARRAY_SIZE));
@@ -61,7 +67,7 @@ public class MainController {
             arrayRangeValueLabel.setText(Integer.toString(valueRange));
         });
 
-        sortingAlgorithmChoice.getItems().addAll("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort");
+        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
     }
 
     public void initializeBarChart() {
@@ -69,12 +75,13 @@ public class MainController {
     }
 
     public void fillArray() {
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+        XYChart.Series series = new XYChart.Series();
+        barChart = new BarChart(xAxis, yAxis);
         for (int i = 0; i < barsNumber; i++) {
-            series.getData().add(new XYChart.Data<>(Integer.toString(i + 1), new Random().nextInt(1, valueRange + 1)));
+            series.getData().add(new XYChart.Data(Integer.toString(i), new Random().nextInt(barsNumber) + 1));
         }
-
         barChart.getData().add(series);
+        pane.setCenter(barChart);
     }
 
     public static void delay() {
@@ -96,34 +103,35 @@ public class MainController {
     public void handleSort() {
         resetButton.setDisable(true);
         sortButton.setDisable(true);
-        try {
-            String sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
-            System.out.println(sortingAlgorithm);
-            Task task = new Task() {
-                @Override
-                protected Object call() throws Exception {
+        String sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
+        System.out.println(sortingAlgorithm);
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception{
+                try {
                     switch (sortingAlgorithm) {
                         case "Selection sort" -> {
-                            System.out.println(barChart.getData().get(0).getData().toString());
                             SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
                         }
                         case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
                         case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
-                        case "Quick sort" ->
-                                SortingAlgorithms.quickSort(barChart.getData().get(0).getData(), 0, barChart.getData().get(0).getData().size() - 1);
+                        case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData(), 0,
+                                barChart.getData().get(0).getData().size() - 1);
                         case "Merge sort" ->
                                 SortingAlgorithms.mergeSort(barChart.getData().get(0).getData(), 0, barChart.getData().get(0).getData().size() - 1);
+                        default -> throw new Exception();
                     }
-                    return null;
+                } catch (Exception e) {
+                    showNoSelectedAlgorithmAlert();
+                } finally {
+                    resetButton.setDisable(false);
                 }
-            };
-            Thread thread = new Thread(task);
-            thread.start();
-        } catch (Exception e) {
-            showNoSelectedAlgorithmAlert();
-        } finally {
-            resetButton.setDisable(false);
-        }
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     public void showNoSelectedAlgorithmAlert() {
@@ -136,16 +144,16 @@ public class MainController {
     }
 
     public static class SortingAlgorithms {
-        private static void swap(ObservableList<XYChart.Data<String, Integer>> list, int index1, int index2) {
-            Integer tmp = list.get(index1).getYValue();
+        private static void swap(ObservableList<XYChart.Data<String, Number>> list, int index1, int index2) {
+            Number tmp = list.get(index1).getYValue();
             list.get(index1).setYValue(list.get(index2).getYValue());
             list.get(index2).setYValue(tmp);
         }
 
-        private static int foundMax(ObservableList<XYChart.Data<String, Integer>> list, int range) {
+        private static int foundMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
             int maxIndex = 0; //Hp: first element is the max
             for (int i = 1; i < range; ++i) {
-                if (list.get(i).getYValue().compareTo(list.get(maxIndex).getYValue()) > 0) {
+                if (list.get(i).getYValue().intValue() >= list.get(maxIndex).getYValue().intValue()) {
                     delay();
                     maxIndex = i;
                 }
@@ -153,17 +161,17 @@ public class MainController {
             return maxIndex;
         }
 
-        private static void insMinore(ObservableList<XYChart.Data<String, Integer>> list, int lastpos) {
+        private static void insMin(ObservableList<XYChart.Data<String, Number>> list, int lastpos) {
             int i = lastpos - 1;
-            int lastValue = list.get(lastpos).getYValue();
-            for (; i >= 0 && lastValue < list.get(i).getYValue(); i--) {
+            int lastValue = list.get(lastpos).getYValue().intValue();
+            for (; i >= 0 && lastValue < list.get(i).getYValue().intValue(); i--) {
                 delay();
                 swap(list, i + 1, i);
             }
             list.get(i + 1).setYValue(lastValue);
         }
 
-        public static void selectionSort(ObservableList<XYChart.Data<String, Integer>> list) {
+        public static void selectionSort(ObservableList<XYChart.Data<String, Number>> list) {
             int maxIndex;
             for (int listSize = list.size(); listSize > 1; listSize--) {
                 maxIndex = foundMax(list, listSize);
@@ -174,12 +182,12 @@ public class MainController {
             }
         }
 
-        public static void bubbleSort(ObservableList<XYChart.Data<String, Integer>> list) {
+        public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list) {
             boolean ordered = false;
             for (int listSize = list.size(); listSize > 1 && !ordered; listSize--) {
                 ordered = true; //Hp: the list is ordered
                 for (int i = 0; i < listSize - 1; i++) {
-                    if (list.get(i).getYValue().compareTo(list.get(i + 1).getYValue()) > 0) {
+                    if (list.get(i).getYValue().intValue() >= list.get(i + 1).getYValue().intValue()) {
                         delay();
                         swap(list, i, i + 1);
                         ordered = false;
@@ -188,27 +196,23 @@ public class MainController {
             }
         }
 
-        public static void insertionSort(ObservableList<XYChart.Data<String, Integer>> list) {
+        public static void insertionSort(ObservableList<XYChart.Data<String, Number>> list) {
             for (int i = 1; i < list.size(); i++) {
-                insMinore(list, i);
+                insMin(list, i);
             }
         }
 
-        public static void quickSort(ObservableList<XYChart.Data<String, Integer>> list, int first, int last) {
+        public static void quickSort(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
             int i, j, pivot;
             if (first < last) {
                 i = first;
                 j = last;
-                pivot = list.get((first + last) / 2).getYValue();
+                pivot = list.get((first + last) / 2).getYValue().intValue();
+
                 do {
-                    for (; list.get(i).getYValue() < pivot; i++)
-                        ;
-                    System.out.println(i);
-                    System.out.println(j);
-                    for (; list.get(j).getYValue() > pivot; j--)
-                        ;
-                    System.out.println(i);
-                    System.out.println(j);
+                    for (; list.get(i).getYValue().intValue() < pivot; i++);
+                    for (; list.get(j).getYValue().intValue() > pivot; j--);
+
                     if (i <= j) {
                         delay();
                         swap(list, i, j);
@@ -221,51 +225,52 @@ public class MainController {
             }
         }
 
-        public static void merge(ObservableList<XYChart.Data<String, Integer>> list, int beg, int mid, int end) {
-            int i, j, k;
+        public static void merge(ObservableList<XYChart.Data<String, Number>> list, int beg, int mid, int end) {
             int n1 = mid - beg + 1;
             int n2 = end - mid;
 
-            List<XYChart.Data<String, Integer>> leftTmp = new ArrayList<>(n1);
-            List<XYChart.Data<String, Integer>> rightTmp = new ArrayList<>(n2);
+            XYChart.Series leftTmp = new XYChart.Series<>();
+            XYChart.Series rightTmp = new XYChart.Series<>();
 
-            for (i = 0; i < n1; i++)
-                leftTmp.get(i).setYValue(list.get(beg + 1).getYValue());
+            for (int i = 0; i < n1; i++)
+                leftTmp.getData().add(new XYChart.Data<>(list.get(beg + 1).getXValue(), list.get(beg + 1).getYValue()));
 
-            for (j = 0; j < n2; j++)
-                rightTmp.get(j).setYValue(list.get(mid + 1 + j).getYValue());
+            for (int j = 0; j < n2; j++)
+                rightTmp.getData().add(new XYChart.Data<>(list.get(mid + 1 + j).getXValue(), list.get(mid + 1 + j).getYValue()));
 
-            i = 0; /* initial index of leftTmp */
-            j = 0; /* initial index of rightTmp */
-            k = beg;  /* initial index of list */
+            int i = 0; /* initial index of leftTmp */
+            int j = 0; /* initial index of rightTmp */
+            int k = beg;  /* initial index of list */
 
             while (i < n1 && j < n2) {
-                if (leftTmp.get(i).getYValue() <= rightTmp.get(j).getYValue()) {
-                    list.get(k).setYValue(leftTmp.get(i).getYValue());
+                delay();
+                if ((int) ((XYChart.Data) leftTmp.getData().get(i)).getYValue() >= (int) ((XYChart.Data) rightTmp.getData().get(j)).getYValue()) {
+                    list.get(k).setYValue((int) ((XYChart.Data) leftTmp.getData().get(i)).getYValue());
                     i++;
                 } else {
-                    list.get(k).setYValue(rightTmp.get(j).getYValue());
+                    list.get(k).setYValue((int) ((XYChart.Data) rightTmp.getData().get(j)).getYValue());
                     j++;
                 }
                 k++;
             }
 
             while (i < n1) {
-                list.get(k).setYValue(leftTmp.get(i).getYValue());
+                list.get(k).setYValue((int) ((XYChart.Data) leftTmp.getData().get(i)).getYValue());
                 i++;
                 k++;
             }
 
             while (j < n2) {
-                list.get(k).setYValue(rightTmp.get(j).getYValue());
+                list.get(k).setYValue((int) ((XYChart.Data) rightTmp.getData().get(j)).getYValue());
                 j++;
                 k++;
             }
         }
 
-        public static void mergeSort(ObservableList<XYChart.Data<String, Integer>> list, int first, int last) {
+        public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
+            int mid;
             if (first < last) {
-                int mid = (first + last) / 2;
+                mid = (first + last) / 2;
                 mergeSort(list, first, mid);
                 mergeSort(list, mid + 1, last);
                 merge(list, first, mid, last);
