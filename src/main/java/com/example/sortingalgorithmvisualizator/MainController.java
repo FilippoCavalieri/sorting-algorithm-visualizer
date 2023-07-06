@@ -31,14 +31,14 @@ public class MainController {
     private static final int DEFAULT_ARRAY_SIZE = 50;
     private static final int DEFAULT_ARRAY_RANGE = 100;
     private static final int MIN_DELAY = 0;
-    private static final int DEFAULT_DELAY = 80;
+    private static final int DEFAULT_DELAY = 200;
     private static final int MAX_DELAY = 1000;
     private static final int RESET_DELAY = 500;
 
-    private BarChart<String, Number> barChart;
+    private BarChart<String, Number> list;
     private CategoryAxis xAxis;
     private NumberAxis yAxis;
-    private int barsNumber, valueRange;
+    private static int barsNumber, valueRange;
     private static long currentDelay;
     private String sortingAlgorithm;
 
@@ -46,7 +46,7 @@ public class MainController {
     public void initialize() {
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
-        barChart = new BarChart<>(xAxis, yAxis);
+        list = new BarChart<>(xAxis, yAxis);
 
         arraySizeSlider.setValue(DEFAULT_ARRAY_SIZE);
         arraySizeValueLabel.setText(Integer.toString(DEFAULT_ARRAY_SIZE));
@@ -71,24 +71,37 @@ public class MainController {
 
         sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
 
-        SpinnerValueFactory<Integer> spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(MIN_DELAY, MAX_DELAY);
+
+        SpinnerValueFactory<Integer> spinnerValueFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(MIN_DELAY, MAX_DELAY);
         spinnerValueFactory.setValue(DEFAULT_DELAY);
         delayPicker.setValueFactory(spinnerValueFactory);
         delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> currentDelay = delayPicker.getValue());
     }
 
+    @FXML
+    public void handleAbout(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About us");
+        alert.setHeaderText("Hi, we're two Computer Engineers students at UNIMORE, University of Modena and " +
+                "Reggio Emilia");
+        alert.setContentText("Here some references:\nGabriele Aldovardi -> GitHub: https://github" +
+                ".com/GabrieleAldovardi\nFilippo Cavalieri -> GitHub: https://github.com/FilippoCavalieri");
+        alert.showAndWait();
+    }
+
     public void initializeBarChart() {
-        barChart.setBarGap(0);
+        list.setBarGap(0);
     }
 
     public void fillArray() {
         XYChart.Series series = new XYChart.Series();
-        barChart = new BarChart(xAxis, yAxis);
+        list = new BarChart(xAxis, yAxis);
         for (int i = 0; i < barsNumber; i++) {
             series.getData().add(new XYChart.Data(Integer.toString(i), new Random().nextInt(barsNumber) + 1));
         }
-        barChart.getData().add(series);
-        pane.setCenter(barChart);
+        list.getData().add(series);
+        pane.setCenter(list);
     }
 
     public static void delay() {
@@ -101,7 +114,7 @@ public class MainController {
 
     @FXML
     public void handleReset() throws InterruptedException {
-        barChart.getData().clear();
+        list.getData().clear();
         fillArray();
         sortButton.setDisable(false);
         Thread.sleep(RESET_DELAY);
@@ -121,11 +134,11 @@ public class MainController {
             protected Object call() {
                 try {
                     switch (sortingAlgorithm) {
-                        case "Selection sort" -> SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
-                        case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
-                        case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
-                        case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData());
-                        case "Merge sort" -> SortingAlgorithms.mergeSort(barChart.getData().get(0).getData());
+                        case "Selection sort" -> SortingAlgorithms.selectionSort(list.getData().get(0).getData());
+                        case "Bubble sort" -> SortingAlgorithms.bubbleSort(list.getData().get(0).getData());
+                        case "Insertion sort" -> SortingAlgorithms.insertionSort(list.getData().get(0).getData());
+                        case "Quick sort" -> SortingAlgorithms.quickSort(list.getData().get(0).getData());
+                        case "Merge sort" -> SortingAlgorithms.mergeSort(list.getData().get(0).getData());
                         default -> throw new Exception();
                     }
                 } catch (NullPointerException ignored) {
@@ -239,45 +252,55 @@ public class MainController {
             quickSortRec(list, 0, list.size() - 1);
         }
 
-        private static void merge(ObservableList<XYChart.Data<String, Number>> list, int begFirst, int begSecond,
-                                  int endSecond) {
-            ObservableList<XYChart.Data<String, Number>> tmp = FXCollections.observableArrayList(list);
-            int i = begFirst, j = begSecond, k = begFirst;
-            while(i <= begSecond - 1 && j <= endSecond){
-                if(tmp.get(i).getYValue().intValue() > tmp.get(j).getYValue().intValue()){
-                    list.get(k).setYValue(tmp.get(i).getYValue().intValue());
-                    i++;
-                }
-                else{
-                    list.get(k).setYValue(tmp.get(j).getYValue().intValue());
-                    j++;
-                }
-                k++;
-            }
-            while(i <= begSecond - 1){
-                list.get(k).setYValue(tmp.get(i).getYValue().intValue());
-                i++;
-                k++;
-            }
-            while(j <= endSecond){
-                list.get(k).setYValue(tmp.get(i).getYValue().intValue());
-                i++;
-                k++;
-            }
+        private static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
+            mergeSortRec(list, 0, barsNumber - 1);
         }
 
-        private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
+        private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int start, int end) {
             int mid;
-            if (first < last) {
-                mid = (first + last) / 2;
-                mergeSortRec(list, first, mid);
-                mergeSortRec(list, mid + 1, last);
-                merge(list, first, mid + 1, last);
+            if (start < end) {
+                mid = (start + end) / 2;
+
+                mergeSortRec(list, start, mid);
+                mergeSortRec(list, mid + 1, end);
+
+                mergeOperation(list, start, mid, end);
             }
         }
+        private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int start, int mid,
+                                           int end) {
+            int i = start, j = mid + 1, k = start;
 
-        public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
-            mergeSortRec(list, 0, list.size() - 1);
+            List<Number> tmp = new ArrayList<>();
+
+            for(XYChart.Data<String, Number> data : list){
+                tmp.add(data.getYValue());
+            }
+
+            while (i <= mid && j <= end) {
+                if ((int) tmp.get(i) < (int) tmp.get(j)) {
+                    delay();
+                    (list.get(k)).setYValue(tmp.get(i));
+                    i++;
+                    k++;
+                } else {
+                    delay();
+                    (list.get(k)).setYValue(tmp.get(j));
+                    j++;
+                    k++;
+                }
+            }
+            for (; i <= mid; i++) {
+                delay();
+                (list.get(k)).setYValue(tmp.get(i));
+                k++;
+            }
+            for (; j <= end; j++) {
+                delay();
+                (list.get(k)).setYValue( tmp.get(j));
+                k++;
+            }
+
         }
     }
 }
