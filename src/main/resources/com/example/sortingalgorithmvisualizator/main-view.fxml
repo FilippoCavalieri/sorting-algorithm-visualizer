@@ -19,14 +19,13 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66666666666666" minWidth="5.333333333333343" prefWidth="16.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.66668192545575" minWidth="10.0" prefWidth="178.33335367838544" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="10.33332316080731" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="78.33334350585938" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="87.00002034505206" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="0.0" prefWidth="5.666646321614621" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="105.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="10.0" prefWidth="95.66666666666663" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="10.0" prefWidth="17.33329264322913" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="41.666666666666686" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="94.33329264322913" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="0.0" prefWidth="14.999979654947879" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.000010172526" minWidth="10.0" prefWidth="110.99997965494788" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="10.0" prefWidth="138.33335367838538" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0000203450521" minWidth="6.666646321614621" prefWidth="6.666646321614621" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.3333740234375" minWidth="10.0" prefWidth="79.33329264322913" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.33335367838538" minWidth="10.0" prefWidth="82.3333740234375" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.6666259765625" minWidth="10.0" prefWidth="20.66666666666663" />
         </columnConstraints>
         <rowConstraints>
@@ -34,7 +33,6 @@
           <RowConstraints maxHeight="316.6666704813639" minHeight="0.0" prefHeight="316.6666704813639" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-          <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="67.0" text="Reset" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Button fx:id="sortButton" mnemonicParsing="false" onAction="#handleSort" prefHeight="26.0" prefWidth="66.0" text="Sort" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <ComboBox fx:id="sortingAlgorithmChoice" prefWidth="150.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <GridPane prefHeight="32.0" prefWidth="194.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
@@ -68,9 +66,29 @@
                </children>
             </GridPane>
             <Label text="Sorting Algorithms" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Label text="Delay (in ms)" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label text="Delay" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Spinner fx:id="delayPicker" editable="true" GridPane.columnIndex="6" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </top>
+   <bottom>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="22.666658401489258" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="83.66668446858723" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="602.9999821980795" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.3332901000977" minWidth="10.0" prefWidth="91.00003051757812" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="824.3333333333334" minWidth="10.0" prefWidth="79.33331298828125" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="357.66668701171875" minWidth="0.0" prefWidth="10.000020345052121" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="56.00000190734863" minHeight="10.0" prefHeight="47.33331489562988" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="25.3333740234375" minHeight="3.999998092651367" prefHeight="12.666685104370117" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+          <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="63.0" text="Reset" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+            <Button fx:id="aboutButton" mnemonicParsing="false" onAction="#handleAbout" text="About Us" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+   </bottom>
 </BorderPane>
