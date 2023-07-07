@@ -203,23 +203,30 @@ public class MainController {
 
     public static class SortingAlgorithms {
         private static void swap(ObservableList<XYChart.Data<String, Number>> list, int index1, int index2) {
-            list.get(index1).getNode().setStyle("-fx-background-color: #E1AB0A");
-            list.get(index2).getNode().setStyle("-fx-background-color: #E1AB0A");
+            //list.get(index1).getNode().setStyle("-fx-background-color: #E1AB0A");
+            //list.get(index2).getNode().setStyle("-fx-background-color: #E1AB0A");
             delay();
             Number tmp = list.get(index1).getYValue();
             list.get(index1).setYValue(list.get(index2).getYValue());
-            list.get(index1).getNode().setStyle("-fx-background-color: #00D8FA");
+            //list.get(index1).getNode().setStyle("-fx-background-color: #00D8FA");
             list.get(index2).setYValue(tmp);
-            list.get(index2).getNode().setStyle("-fx-background-color: #00D8FA");
+            //list.get(index2).getNode().setStyle("-fx-background-color: #00D8FA");
         }
 
         private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
             int maxIndex = 0; //Hp: first element is the max
+            list.get(maxIndex).getNode().setStyle("-fx-background-color: #FFFF00");
             for (int i = 1; i < range; ++i) {
-                list.get(i).getNode().setStyle("-fx-background-color: #E1AB0A");
+                list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
+                delay();
                 if (list.get(i).getYValue().intValue() > list.get(maxIndex).getYValue().intValue()) {
+                    list.get(maxIndex).getNode().setStyle("-fx-background-color: #CC0066");
                     delay();
                     maxIndex = i;
+                    list.get(maxIndex).getNode().setStyle("-fx-background-color: #FFFF00");
+                }
+                else{
+                    list.get(i).getNode().setStyle("-fx-background-color: #CC0066");
                 }
             }
             return maxIndex;
@@ -232,8 +239,11 @@ public class MainController {
                 if (maxIndex < listSize - 1) {
                     delay();
                     swap(list, maxIndex, listSize - 1);
+                    list.get(maxIndex).getNode().setStyle("-fx-background-color: #CC0066");
                 }
+                list.get(listSize - 1).getNode().setStyle("-fx-background-color: #99FF99");
             }
+            list.get(0).getNode().setStyle("-fx-background-color: #99FF99");
         }
 
         public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list) {
@@ -241,12 +251,17 @@ public class MainController {
             for (int listSize = list.size(); listSize > 1 && !ordered; listSize--) {
                 ordered = true; //Hp: the list is ordered
                 for (int i = 0; i < listSize - 1; i++) {
+                    list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
+                    list.get(i + 1).getNode().setStyle("-fx-background-color: #3399FF");
+                    delay();
                     if (list.get(i).getYValue().intValue() >= list.get(i + 1).getYValue().intValue()) {
-                        delay();
                         swap(list, i, i + 1);
                         ordered = false;
                     }
+                    list.get(i).getNode().setStyle("-fx-background-color: #CC0066");
+                    list.get(i + 1).getNode().setStyle("-fx-background-color: #CC0066");
                 }
+                list.get(listSize - 1).getNode().setStyle("-fx-background-color: #99FF99");
             }
         }
 
