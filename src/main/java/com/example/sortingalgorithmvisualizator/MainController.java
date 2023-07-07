@@ -203,9 +203,9 @@ public class MainController {
 
     public static class SortingAlgorithms {
         private static void swap(ObservableList<XYChart.Data<String, Number>> list, int index1, int index2) {
-            Number tmp = list.get(index1).getYValue();
-            list.get(index1).setYValue(list.get(index2).getYValue());
-            list.get(index2).setYValue(tmp);
+            Number tmp = list.get(index2).getYValue();
+            list.get(index2).setYValue(list.get(index1).getYValue());
+            list.get(index1).setYValue(tmp);
         }
 
         private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
@@ -268,8 +268,12 @@ public class MainController {
         private static void insertMin(ObservableList<XYChart.Data<String, Number>> list, int lastPos) {
             int i, lastValue = list.get(lastPos).getYValue().intValue();
             for (i = lastPos - 1; i >= 0 && lastValue < list.get(i).getYValue().intValue(); i--) {
+                list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
+                list.get(i + 1).getNode().setStyle("-fx-background-color: #3399FF");
                 delay();
                 swap(list, i + 1, i);
+                list.get(i).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(i + 1).getNode().setStyle("-fx-background-color: #99FF99");
             }
             list.get(i + 1).setYValue(lastValue);
         }
@@ -309,8 +313,8 @@ public class MainController {
             quickSortRec(list, 0, list.size() - 1);
         }
 
-        private static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
-            mergeSortRec(list, 0, barsNumber - 1);
+        public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
+            mergeSortRec(list, 0, list.size() - 1);
         }
 
         private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int start, int end) {
