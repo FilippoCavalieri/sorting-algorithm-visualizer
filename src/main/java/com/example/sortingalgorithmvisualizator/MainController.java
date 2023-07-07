@@ -1,9 +1,11 @@
 package com.example.sortingalgorithmvisualizator;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -19,6 +21,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
 public class MainController {
 
@@ -29,7 +32,7 @@ public class MainController {
     @FXML
     private ComboBox<String> sortingAlgorithmChoice;
     @FXML
-    private Label arraySizeValueLabel, arrayRangeValueLabel;
+    private Label arraySizeValueLabel, arrayRangeValueLabel, timeElapsedLabel, timeElapsedValueLabel, infoLabel;
     @FXML
     private Button sortButton, resetButton;
     @FXML
@@ -63,6 +66,9 @@ public class MainController {
         delaySpinner.setValue(DEFAULT_DELAY);
         delayPicker.setValueFactory(delaySpinner);
 
+        timeElapsedLabel.setVisible(false);
+        timeElapsedValueLabel.setVisible(false);
+
         barsNumber = DEFAULT_ARRAY_SIZE;
         valueRange = DEFAULT_ARRAY_RANGE;
         currentDelay = DEFAULT_DELAY;
@@ -92,9 +98,6 @@ public class MainController {
         barChart.setVerticalZeroLineVisible(false);
         barChart.getXAxis().setTickLabelsVisible(false);
         barChart.getXAxis().setOpacity(0);
-        //barChart.getYAxis().setTickLabelsVisible(false);
-        //barChart.getYAxis().setOpacity(0);
-        //yAxis.setAnimated(false);
         barChart.setBarGap(0);
         barChart.setAnimated(false);
     }
@@ -111,7 +114,7 @@ public class MainController {
         pane.setCenter(barChart);
 
         for (int i = 0; i < barsNumber; i++)
-            series.getData().get(i).getNode().setStyle("-fx-background-color:#00D8FA");
+            series.getData().get(i).getNode().setStyle("-fx-background-color:#CC0066");
     }
 
     public static void delay() {
@@ -127,21 +130,22 @@ public class MainController {
         barChart.getData().clear();
         fillArray();
         sortButton.setDisable(false);
+        timeElapsedLabel.setVisible(false);
+        timeElapsedValueLabel.setVisible(false);
     }
 
     @FXML
     public void handleSort() {
-        //resetButton.setDisable(true);
         sortButton.setDisable(true);
-        try {
-            sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
-        } catch (Exception e) {
+        sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
+        if(sortingAlgorithm == null){
             showNoSelectedAlgorithmAlert();
         }
         Task task = new Task() {
             @Override
             protected Object call() {
                 try {
+                    long startTime = System.nanoTime();
                     switch (sortingAlgorithm) {
                         case "Selection sort" -> SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
                         case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
@@ -150,6 +154,12 @@ public class MainController {
                         case "Merge sort" -> SortingAlgorithms.mergeSort(barChart.getData().get(0).getData());
                         default -> throw new Exception();
                     }
+                    Platform.runLater(() -> {
+                        timeElapsedValueLabel.setText(Long.toString(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime)) + " s");
+                        timeElapsedLabel.setVisible(true);
+                        timeElapsedValueLabel.setVisible(true);
+                    });
+
                 } catch (NullPointerException ignored) {
 
                 } catch (Exception e) {
@@ -179,8 +189,8 @@ public class MainController {
         private static void swap(ObservableList<XYChart.Data<String, Number>> list, int index1, int index2) {
             list.get(index1).getNode().setStyle("-fx-background-color: #E1AB0A");
             list.get(index2).getNode().setStyle("-fx-background-color: #E1AB0A");
-            Number tmp = list.get(index1).getYValue();
             delay();
+            Number tmp = list.get(index1).getYValue();
             list.get(index1).setYValue(list.get(index2).getYValue());
             list.get(index1).getNode().setStyle("-fx-background-color: #00D8FA");
             list.get(index2).setYValue(tmp);
@@ -190,6 +200,7 @@ public class MainController {
         private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
             int maxIndex = 0; //Hp: first element is the max
             for (int i = 1; i < range; ++i) {
+                list.get(i).getNode().setStyle("-fx-background-color: #E1AB0A");
                 if (list.get(i).getYValue().intValue() > list.get(maxIndex).getYValue().intValue()) {
                     delay();
                     maxIndex = i;
@@ -347,5 +358,17 @@ public class MainController {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    public void handleSelection(){
+        sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
+        if(sortingAlgorithm != null){
+            infoLabel.setVisible(true);
+        }
+    }
+    @FXML
+    public void handleInfo(){
+
     }
 }
