@@ -10,8 +10,13 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.util.*;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class MainController {
 
@@ -77,16 +82,6 @@ public class MainController {
         sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
     }
 
-    @FXML
-    public void handleAbout(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About us");
-        alert.setHeaderText("Hi, we're two Computer Engineers students at UNIMORE, University of Modena and Reggio Emilia");
-        alert.setContentText("Here some references:\nGabriele Aldovardi -> GitHub: https://github" +
-                ".com/GabrieleAldovardi\nFilippo Cavalieri -> GitHub: https://github.com/FilippoCavalieri");
-        alert.showAndWait();
-    }
-
     public void initializeBarChart() {
         barChart.setLegendVisible(false);
         barChart.setHorizontalGridLinesVisible(false);
@@ -120,7 +115,7 @@ public class MainController {
     }
 
     @FXML
-    public void handleReset() throws InterruptedException {
+    public void handleReset() {
         barChart.getData().clear();
         fillArray();
         sortButton.setDisable(false);
@@ -307,6 +302,37 @@ public class MainController {
                 k++;
             }
 
+        }
+    }
+
+    @FXML
+    public void handleAbout() {
+
+        Hyperlink linkGA = new Hyperlink("Gabriele Aldovardi -> GitHub");
+        linkGA.setOnAction(e -> openWebPage("https://github.com/GabrieleAldovardi"));
+
+        Hyperlink linkFC = new Hyperlink("Filippo Cavalieri -> GitHub");
+        linkFC.setOnAction(e -> openWebPage("https://github.com/FilippoCavalieri"));
+
+        VBox vbox = new VBox();
+        Label description = new Label("Here some references:");
+        vbox.getChildren().addAll(description , linkGA, linkFC);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About us");
+        alert.setHeaderText("Hi, we're two Computer Engineers students at UNIMORE, University of Modena and Reggio Emilia");
+        alert.getDialogPane().setContent(vbox);
+        alert.showAndWait();
+    }
+
+    private void openWebPage(String url) {
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI(url));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
