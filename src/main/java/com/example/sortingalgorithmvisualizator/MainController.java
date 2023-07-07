@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
@@ -42,8 +43,9 @@ public class MainController {
     private static final int DEFAULT_ARRAY_SIZE = 50;
     private static final int DEFAULT_ARRAY_RANGE = 100;
     private static final int MIN_DELAY = 0;
-    private static final int DEFAULT_DELAY = 200;
+    private static final int DEFAULT_DELAY = 100;
     private static final int MAX_DELAY = 1000;
+    private static final double MIN_DELAY_SIZE_RATIO= 0.25;
 
     private BarChart<String, Number> barChart;
     private CategoryAxis xAxis;
@@ -69,7 +71,6 @@ public class MainController {
 
         timeElapsedLabel.setVisible(false);
         timeElapsedValueLabel.setVisible(false);
-
         infoLabel.setVisible(false);
 
         barsNumber = DEFAULT_ARRAY_SIZE;
@@ -81,6 +82,8 @@ public class MainController {
         arraySizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             barsNumber = (int) arraySizeSlider.getValue();
             arraySizeValueLabel.setText(Integer.toString(barsNumber));
+            currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
+            delaySpinner.setValue(Math.toIntExact(currentDelay));
         });
 
         arrayRangeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -88,7 +91,19 @@ public class MainController {
             arrayRangeValueLabel.setText(Integer.toString(valueRange));
         });
 
-        delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> currentDelay = delayPicker.getValue());
+        delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+                if(delayPicker.getValue() < barsNumber * MIN_DELAY_SIZE_RATIO){
+                    currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
+                }
+                else{
+                    currentDelay = delayPicker.getValue();
+                }
+                delaySpinner.setValue(Math.toIntExact(currentDelay));
+            }catch (Exception ignored){
+
+            }
+        });
 
         sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
     }
@@ -376,7 +391,7 @@ public class MainController {
                 case "Bubble sort" -> tooltip.setText("Sorts the array by iterating on it. With each iteration compares\n"
                         + "each pair of adjacent elements, swapping them if they're in the\nwrong order. At the " +
                         "end of each iteration the max element will be at\nthe end of the considered sub-array. If"
-                        + "during an iteration no\nelements have been swapped then the array is sorted.\n" + "Time " +
+                        + " during an iteration no\nelements have been swapped then the array is sorted.\nTime " +
                         "complexity:\t• best case: O(n)\t• worst case: O(n²)");
                 case "Insertion sort" -> tooltip.setText("Sorts the array by building a new ordered array, in which\n" +
                         "each element is inserted the right place.\n" + "Time complexity:\t• best case: O(n)\t• " +
