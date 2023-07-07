@@ -323,49 +323,61 @@ public class MainController {
             quickSortRec(list, 0, list.size() - 1);
         }
 
-        private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int start, int mid, int end) {
-            int i = start, j = mid + 1, k = start;
-
+        private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int first, int mid, int last) {
+            int i = first, j = mid + 1, k = first;
             List<Number> tmp = new ArrayList<>();
 
             for (XYChart.Data<String, Number> data : list) {
                 tmp.add(data.getYValue());
             }
-
-            while (i <= mid && j <= end) {
+            for(int y = first; y <= last; y++){
+                list.get(y).getNode().setStyle("-fx-background-color: #99FF99");
+            }
+            while (i <= mid && j <= last) {
                 if ((int) tmp.get(i) < (int) tmp.get(j)) {
+                    list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
                     delay();
-                    (list.get(k)).setYValue(tmp.get(i));
+                    list.get(k).setYValue(tmp.get(i));
+                    list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
                     i++;
                     k++;
                 } else {
+                    list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
                     delay();
-                    (list.get(k)).setYValue(tmp.get(j));
+                    list.get(k).setYValue(tmp.get(j));
+                    list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
                     j++;
                     k++;
                 }
             }
             for (; i <= mid; i++) {
+                list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
                 delay();
-                (list.get(k)).setYValue(tmp.get(i));
+                list.get(k).setYValue(tmp.get(i));
+                list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
                 k++;
             }
-            for (; j <= end; j++) {
+            for (; j <= last; j++) {
+                list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
                 delay();
-                (list.get(k)).setYValue(tmp.get(j));
+                list.get(k).setYValue(tmp.get(j));
+                list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
                 k++;
+            }
+            for(int y = first; y <= last; y++){
+                list.get(y).getNode().setStyle("-fx-background-color: #CC0066");
             }
         }
 
-        private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int start, int end) {
+        private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
             int mid;
-            if (start < end) {
-                mid = (start + end) / 2;
+            if (first < last) {
+                mid = (first + last) / 2;
 
-                mergeSortRec(list, start, mid);
-                mergeSortRec(list, mid + 1, end);
+                mergeSortRec(list, first, mid);
+                mergeSortRec(list, mid + 1, last);
 
-                mergeOperation(list, start, mid, end);
+                mergeOperation(list, first, mid, last);
             }
         }
 
