@@ -120,7 +120,7 @@ public class MainController {
         barChart.setAnimated(false);
     }
 
-    public void fillArray() {
+    private void fillArray() {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         barChart = new BarChart<>(xAxis, yAxis);
         initializeBarChart();
@@ -134,7 +134,7 @@ public class MainController {
             series.getData().get(i).getNode().setStyle("-fx-background-color:#CC0066");
     }
 
-    public static void delay() {
+    private static void delay() {
         try {
             Thread.sleep(currentDelay);
         } catch (InterruptedException ignored) {
@@ -191,7 +191,7 @@ public class MainController {
         thread.start();
     }
 
-    public void showNoSelectedAlgorithmAlert() {
+    private void showNoSelectedAlgorithmAlert() {
         sortButton.setDisable(false);
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("No Selection");
@@ -203,14 +203,9 @@ public class MainController {
 
     public static class SortingAlgorithms {
         private static void swap(ObservableList<XYChart.Data<String, Number>> list, int index1, int index2) {
-            //list.get(index1).getNode().setStyle("-fx-background-color: #E1AB0A");
-            //list.get(index2).getNode().setStyle("-fx-background-color: #E1AB0A");
-            delay();
             Number tmp = list.get(index1).getYValue();
             list.get(index1).setYValue(list.get(index2).getYValue());
-            //list.get(index1).getNode().setStyle("-fx-background-color: #00D8FA");
             list.get(index2).setYValue(tmp);
-            //list.get(index2).getNode().setStyle("-fx-background-color: #00D8FA");
         }
 
         private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
@@ -248,7 +243,8 @@ public class MainController {
 
         public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list) {
             boolean ordered = false;
-            for (int listSize = list.size(); listSize > 1 && !ordered; listSize--) {
+            int listSize = list.size();
+            for (; listSize > 1 && !ordered; listSize--) {
                 ordered = true; //Hp: the list is ordered
                 for (int i = 0; i < listSize - 1; i++) {
                     list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
@@ -262,6 +258,10 @@ public class MainController {
                     list.get(i + 1).getNode().setStyle("-fx-background-color: #CC0066");
                 }
                 list.get(listSize - 1).getNode().setStyle("-fx-background-color: #99FF99");
+            }
+            for(int i = listSize; i >= 0; i--){
+                delay();
+                list.get(i).getNode().setStyle("-fx-background-color: #99FF99");
             }
         }
 
