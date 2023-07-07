@@ -285,25 +285,35 @@ public class MainController {
         }
 
         private static void quickSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
-            int i, j, pivot;
+            int pivot, i, j, pivotIndex;
             if (first < last) {
+                for(int k = first; k <= last; k++){
+                    list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
+                }
                 i = first;
                 j = last;
-                pivot = list.get((first + last) / 2).getYValue().intValue();
-
+                pivotIndex = (first + last) / 2;
+                pivot = list.get(pivotIndex).getYValue().intValue();
+                list.get(pivotIndex).getNode().setStyle("-fx-background-color: #FFFF00");
                 do {
-                    for (; list.get(i).getYValue().intValue() < pivot; i++)
-                        ;
-                    for (; list.get(j).getYValue().intValue() > pivot; j--)
-                        ;
+                    for (; list.get(i).getYValue().intValue() < pivot; i++);
+                    for (; list.get(j).getYValue().intValue() > pivot; j--);
 
                     if (i <= j) {
+                        list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
+                        list.get(j).getNode().setStyle("-fx-background-color: #3399FF");
                         delay();
                         swap(list, i, j);
+                        list.get(i).getNode().setStyle("-fx-background-color: #99FF99");
+                        list.get(j).getNode().setStyle("-fx-background-color: #99FF99");
+                        list.get(pivotIndex).getNode().setStyle("-fx-background-color: #FFFF00");
                         i++;
                         j--;
                     }
                 } while (i <= j);
+                for(int k = first; k <= last; k++){
+                    list.get(k).getNode().setStyle("-fx-background-color: #CC0066");
+                }
                 quickSortRec(list, first, j);
                 quickSortRec(list, i, last);
             }
