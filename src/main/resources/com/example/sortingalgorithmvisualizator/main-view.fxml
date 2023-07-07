@@ -68,7 +68,7 @@
                 <Label text="Sorting Algorithms" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                 <Label text="Delay" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                 <Spinner fx:id="delayPicker" editable="true" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-            <Label fx:id="infoLabel" alignment="CENTER" contentDisplay="CENTER" onDragDetected="#handleInfo" text="🛈" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label fx:id="infoLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="23.0" text="🛈" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             </children>
         </GridPane>
     </top>

@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.util.*;
 import java.awt.Desktop;
@@ -69,6 +70,8 @@ public class MainController {
         timeElapsedLabel.setVisible(false);
         timeElapsedValueLabel.setVisible(false);
 
+        infoLabel.setVisible(false);
+
         barsNumber = DEFAULT_ARRAY_SIZE;
         valueRange = DEFAULT_ARRAY_RANGE;
         currentDelay = DEFAULT_DELAY;
@@ -107,8 +110,7 @@ public class MainController {
         barChart = new BarChart<>(xAxis, yAxis);
         initializeBarChart();
         for (int i = 0; i < barsNumber; i++) {
-            series.getData().add(new XYChart.Data<>(Integer.toString(i),
-                    new Random().nextInt(valueRange) + 1));
+            series.getData().add(new XYChart.Data<>(Integer.toString(i), new Random().nextInt(valueRange) + 1));
         }
         barChart.getData().add(series);
         pane.setCenter(barChart);
@@ -138,7 +140,7 @@ public class MainController {
     public void handleSort() {
         sortButton.setDisable(true);
         sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
-        if(sortingAlgorithm == null){
+        if (sortingAlgorithm == null) {
             showNoSelectedAlgorithmAlert();
         }
         Task task = new Task() {
@@ -159,7 +161,6 @@ public class MainController {
                         timeElapsedLabel.setVisible(true);
                         timeElapsedValueLabel.setVisible(true);
                     });
-
                 } catch (NullPointerException ignored) {
 
                 } catch (Exception e) {
@@ -257,8 +258,10 @@ public class MainController {
                 pivot = list.get((first + last) / 2).getYValue().intValue();
 
                 do {
-                    for (; list.get(i).getYValue().intValue() < pivot; i++);
-                    for (; list.get(j).getYValue().intValue() > pivot; j--);
+                    for (; list.get(i).getYValue().intValue() < pivot; i++)
+                        ;
+                    for (; list.get(j).getYValue().intValue() > pivot; j--)
+                        ;
 
                     if (i <= j) {
                         delay();
@@ -291,13 +294,13 @@ public class MainController {
                 mergeOperation(list, start, mid, end);
             }
         }
-        private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int start, int mid,
-                                           int end) {
+
+        private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int start, int mid, int end) {
             int i = start, j = mid + 1, k = start;
 
             List<Number> tmp = new ArrayList<>();
 
-            for(XYChart.Data<String, Number> data : list){
+            for (XYChart.Data<String, Number> data : list) {
                 tmp.add(data.getYValue());
             }
 
@@ -321,10 +324,9 @@ public class MainController {
             }
             for (; j <= end; j++) {
                 delay();
-                (list.get(k)).setYValue( tmp.get(j));
+                (list.get(k)).setYValue(tmp.get(j));
                 k++;
             }
-
         }
     }
 
@@ -339,7 +341,7 @@ public class MainController {
 
         VBox vbox = new VBox();
         Label description = new Label("Here some references:");
-        vbox.getChildren().addAll(description , linkGA, linkFC);
+        vbox.getChildren().addAll(description, linkGA, linkFC);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About us");
@@ -361,14 +363,38 @@ public class MainController {
     }
 
     @FXML
-    public void handleSelection(){
+    public void handleSelection() {
         sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
-        if(sortingAlgorithm != null){
+        if (sortingAlgorithm != null) {
             infoLabel.setVisible(true);
+            Tooltip tooltip = new Tooltip();
+            switch (sortingAlgorithm) {
+                case "Selection sort" ->  tooltip.setText("Sorts the array by dividing it in two parts: a " +
+                        "sorted sub-array which\n" + "is built up from right to left and and a sub-array of the " +
+                        "remaining\nunsorted elements that occupy the rest of the array.\n" + "Time complexity:\t• best "
+                        + "case: O(n²)\t• worst case: O(n²)");
+                case "Bubble sort" -> tooltip.setText("Sorts the array by iterating on it. With each iteration compares\n"
+                        + "each pair of adjacent elements, swapping them if they're in the\nwrong order. At the " +
+                        "end of each iteration the max element will be at\nthe end of the considered sub-array. If"
+                        + "during an iteration no\nelements have been swapped then the array is sorted.\n" + "Time " +
+                        "complexity:\t• best case: O(n)\t• worst case: O(n²)");
+                case "Insertion sort" -> tooltip.setText("Sorts the array by building a new ordered array, in which\n" +
+                        "each element is inserted the right place.\n" + "Time complexity:\t• best case: O(n)\t• " +
+                        "worst case: O(n²)");
+                case "Quick sort" -> tooltip.setText("Sorts the array by partitioning it in two sub-arrays, delimited\n" +
+                        "by a pivot element. The first sub-array contains only elements\nless than or equal to the pivot." +
+                        " while the second sub-array contains\nonly elements larger then the pivot. The two sub-arrays" +
+                        " can then be\nordered apart by applying the same procedure. The algorithm is\nrecursive, the" +
+                        "trivial case consists of a sub-array of one element.\nTime complexity:\t• best case: O(n log" +
+                        "n)\t• worst case: O(n²)");
+                case "Merge sort" -> tooltip.setText("A different version of the quick. Sorts the array by" +
+                        "partitioning\nit in two sub-arrays having the same size, sorting them apart\nand then " +
+                        "finally merging them.\nTime complexity:\t• best case: O(n log n)\t• worst case: O(n log n)");
+            }
+            tooltip.setStyle("-fx-background-color: grey");
+            tooltip.setStyle("-fx-show-duration: 40s");
+            tooltip.setFont(new Font(14));
+            infoLabel.setTooltip(tooltip);
         }
-    }
-    @FXML
-    public void handleInfo(){
-
     }
 }
