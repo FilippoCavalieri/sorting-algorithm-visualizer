@@ -100,17 +100,18 @@ public class MainController {
     }
 
     public void fillArray() {
-        XYChart.Series series = new XYChart.Series();
-        barChart = new BarChart(xAxis, yAxis);
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        barChart = new BarChart<>(xAxis, yAxis);
         initializeBarChart();
         for (int i = 0; i < barsNumber; i++) {
-            series.getData().add(new XYChart.Data(Integer.toString(i), new Random().nextInt(valueRange) + 1));
+            series.getData().add(new XYChart.Data<>(Integer.toString(i),
+                    new Random().nextInt(valueRange) + 1));
         }
         barChart.getData().add(series);
         pane.setCenter(barChart);
 
         for (int i = 0; i < barsNumber; i++)
-            ((XYChart.Data<String, Integer>) series.getData().get(i)).getNode().setStyle("-fx-background-color:#00D8FA");
+            series.getData().get(i).getNode().setStyle("-fx-background-color:#00D8FA");
     }
 
     public static void delay() {
@@ -133,7 +134,7 @@ public class MainController {
         //resetButton.setDisable(true);
         sortButton.setDisable(true);
         try {
-            sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
+            sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
         } catch (Exception e) {
             showNoSelectedAlgorithmAlert();
         }
@@ -176,9 +177,14 @@ public class MainController {
 
     public static class SortingAlgorithms {
         private static void swap(ObservableList<XYChart.Data<String, Number>> list, int index1, int index2) {
+            list.get(index1).getNode().setStyle("-fx-background-color: #E1AB0A");
+            list.get(index2).getNode().setStyle("-fx-background-color: #E1AB0A");
             Number tmp = list.get(index1).getYValue();
+            delay();
             list.get(index1).setYValue(list.get(index2).getYValue());
+            list.get(index1).getNode().setStyle("-fx-background-color: #00D8FA");
             list.get(index2).setYValue(tmp);
+            list.get(index2).getNode().setStyle("-fx-background-color: #00D8FA");
         }
 
         private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
@@ -240,10 +246,8 @@ public class MainController {
                 pivot = list.get((first + last) / 2).getYValue().intValue();
 
                 do {
-                    for (; list.get(i).getYValue().intValue() < pivot; i++)
-                        ;
-                    for (; list.get(j).getYValue().intValue() > pivot; j--)
-                        ;
+                    for (; list.get(i).getYValue().intValue() < pivot; i++);
+                    for (; list.get(j).getYValue().intValue() > pivot; j--);
 
                     if (i <= j) {
                         delay();
