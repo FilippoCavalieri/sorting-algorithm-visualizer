@@ -323,22 +323,6 @@ public class MainController {
             quickSortRec(list, 0, list.size() - 1);
         }
 
-        public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
-            mergeSortRec(list, 0, list.size() - 1);
-        }
-
-        private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int start, int end) {
-            int mid;
-            if (start < end) {
-                mid = (start + end) / 2;
-
-                mergeSortRec(list, start, mid);
-                mergeSortRec(list, mid + 1, end);
-
-                mergeOperation(list, start, mid, end);
-            }
-        }
-
         private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int start, int mid, int end) {
             int i = start, j = mid + 1, k = start;
 
@@ -371,6 +355,22 @@ public class MainController {
                 (list.get(k)).setYValue(tmp.get(j));
                 k++;
             }
+        }
+
+        private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int start, int end) {
+            int mid;
+            if (start < end) {
+                mid = (start + end) / 2;
+
+                mergeSortRec(list, start, mid);
+                mergeSortRec(list, mid + 1, end);
+
+                mergeOperation(list, start, mid, end);
+            }
+        }
+
+        public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
+            mergeSortRec(list, 0, list.size() - 1);
         }
     }
 
@@ -430,7 +430,7 @@ public class MainController {
                         " while the second sub-array contains\nonly elements larger then the pivot. The two sub-arrays" +
                         " can then be\nordered apart by applying the same procedure. The algorithm is\nrecursive, the" +
                         "trivial case consists of a sub-array of one element.\nTime complexity:\t• best case: O(n log" +
-                        "n)\t• worst case: O(n²)");
+                        " n)\t• worst case: O(n²)");
                 case "Merge sort" -> tooltip.setText("A different version of the quick. Sorts the array by" +
                         "partitioning\nit in two sub-arrays having the same size, sorting them apart\nand then " +
                         "finally merging them.\nTime complexity:\t• best case: O(n log n)\t• worst case: O(n log n)");
