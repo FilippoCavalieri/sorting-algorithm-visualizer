@@ -90,6 +90,11 @@ public class MainController {
         barChart.setVerticalGridLinesVisible(false);
         barChart.setHorizontalZeroLineVisible(false);
         barChart.setVerticalZeroLineVisible(false);
+        barChart.getXAxis().setTickLabelsVisible(false);
+        barChart.getXAxis().setOpacity(0);
+        //barChart.getYAxis().setTickLabelsVisible(false);
+        //barChart.getYAxis().setOpacity(0);
+        //yAxis.setAnimated(false);
         barChart.setBarGap(0);
         barChart.setAnimated(false);
     }
