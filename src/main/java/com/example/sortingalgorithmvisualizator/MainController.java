@@ -9,6 +9,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -163,6 +165,7 @@ public class MainController {
         alert.setTitle("No Selection");
         alert.setHeaderText("No algorithm selected");
         alert.setContentText("Please select an algorithm in the check box.");
+        alert.getDialogPane().setGraphic(new ImageView(new Image(String.valueOf(this.getClass().getResource("icons/warning_icon.png")))));
         alert.showAndWait();
     }
 
@@ -321,6 +324,7 @@ public class MainController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About us");
         alert.setHeaderText("Hi, we're two Computer Engineers students at UNIMORE, University of Modena and Reggio Emilia");
+        alert.getDialogPane().setGraphic(new ImageView(new Image(String.valueOf(this.getClass().getResource("icons/info_icon.png")))));
         alert.getDialogPane().setContent(vbox);
         alert.showAndWait();
     }

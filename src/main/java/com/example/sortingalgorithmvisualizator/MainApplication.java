@@ -3,6 +3,7 @@ package com.example.sortingalgorithmvisualizator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Sorting Algorithm Visualizator");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("icons/app_icon.png")));
         stage.setScene(scene);
         stage.show();
     }
