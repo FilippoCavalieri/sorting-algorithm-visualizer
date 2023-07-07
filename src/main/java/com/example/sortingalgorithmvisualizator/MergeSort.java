@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MergeSort {
-    /*private static void merge(int[] array, int begFirst, int endFirst,
+    private static void merge(int[] array, int begFirst, int endFirst,
                               int endSecond) {
-        int[] tmp = Arrays.copyOf(array, endSecond - begFirst + 1);
-        int i = begFirst, j = endFirst + 1, k = begFirst;
+        int[] tmp = new int[endSecond - begFirst + 1];
+        int i = begFirst, j = endFirst + 1, k = 0;
+        for(int t = begFirst; k < tmp.length; ++k, ++t){
+            tmp[k] = array[t];
+        }
+        k = 0;
         while(i <= endFirst && j <= endSecond){
             if(array[i] < array[j]){
                 tmp[k] = array[i];
@@ -58,5 +62,5 @@ public class MergeSort {
         //mergeSort(array);
         merge(array, 2, 2, 3);
         System.out.println(array.toString());
-    }*/
+    }
 }

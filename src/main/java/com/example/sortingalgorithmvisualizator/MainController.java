@@ -33,9 +33,8 @@ public class MainController {
     private static final int MIN_DELAY = 0;
     private static final int DEFAULT_DELAY = 200;
     private static final int MAX_DELAY = 1000;
-    private static final int RESET_DELAY = 500;
 
-    private BarChart<String, Number> list;
+    private BarChart<String, Number> barChart;
     private CategoryAxis xAxis;
     private NumberAxis yAxis;
     private static int barsNumber, valueRange;
@@ -46,18 +45,24 @@ public class MainController {
     public void initialize() {
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
-        list = new BarChart<>(xAxis, yAxis);
+        //barChart = new BarChart<>(xAxis, yAxis);
 
         arraySizeSlider.setValue(DEFAULT_ARRAY_SIZE);
         arraySizeValueLabel.setText(Integer.toString(DEFAULT_ARRAY_SIZE));
+
         arrayRangeSlider.setValue(DEFAULT_ARRAY_RANGE);
         arrayRangeValueLabel.setText(Integer.toString(DEFAULT_ARRAY_RANGE));
 
+        SpinnerValueFactory<Integer> delaySpinner = new SpinnerValueFactory.IntegerSpinnerValueFactory(MIN_DELAY, MAX_DELAY);
+        delaySpinner.setValue(DEFAULT_DELAY);
+        delayPicker.setValueFactory(delaySpinner);
+
         barsNumber = DEFAULT_ARRAY_SIZE;
         valueRange = DEFAULT_ARRAY_RANGE;
+        currentDelay = DEFAULT_DELAY;
 
-        initializeBarChart();
         fillArray();
+        initializeBarChart();
 
         arraySizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             barsNumber = (int) arraySizeSlider.getValue();
@@ -69,39 +74,33 @@ public class MainController {
             arrayRangeValueLabel.setText(Integer.toString(valueRange));
         });
 
-        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
-
-
-        SpinnerValueFactory<Integer> spinnerValueFactory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(MIN_DELAY, MAX_DELAY);
-        spinnerValueFactory.setValue(DEFAULT_DELAY);
-        delayPicker.setValueFactory(spinnerValueFactory);
         delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> currentDelay = delayPicker.getValue());
+
+        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
     }
 
     @FXML
     public void handleAbout(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About us");
-        alert.setHeaderText("Hi, we're two Computer Engineers students at UNIMORE, University of Modena and " +
-                "Reggio Emilia");
+        alert.setHeaderText("Hi, we're two Computer Engineers students at UNIMORE, University of Modena and Reggio Emilia");
         alert.setContentText("Here some references:\nGabriele Aldovardi -> GitHub: https://github" +
                 ".com/GabrieleAldovardi\nFilippo Cavalieri -> GitHub: https://github.com/FilippoCavalieri");
         alert.showAndWait();
     }
 
     public void initializeBarChart() {
-        list.setBarGap(0);
+        barChart.setBarGap(0);
     }
 
     public void fillArray() {
         XYChart.Series series = new XYChart.Series();
-        list = new BarChart(xAxis, yAxis);
+        barChart = new BarChart(xAxis, yAxis);
         for (int i = 0; i < barsNumber; i++) {
-            series.getData().add(new XYChart.Data(Integer.toString(i), new Random().nextInt(barsNumber) + 1));
+            series.getData().add(new XYChart.Data(Integer.toString(i), new Random().nextInt(valueRange) + 1));
         }
-        list.getData().add(series);
-        pane.setCenter(list);
+        barChart.getData().add(series);
+        pane.setCenter(barChart);
     }
 
     public static void delay() {
@@ -114,15 +113,14 @@ public class MainController {
 
     @FXML
     public void handleReset() throws InterruptedException {
-        list.getData().clear();
+        barChart.getData().clear();
         fillArray();
         sortButton.setDisable(false);
-        Thread.sleep(RESET_DELAY);
     }
 
     @FXML
     public void handleSort() {
-        resetButton.setDisable(true);
+        //resetButton.setDisable(true);
         sortButton.setDisable(true);
         try {
             sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem().toString();
@@ -134,11 +132,11 @@ public class MainController {
             protected Object call() {
                 try {
                     switch (sortingAlgorithm) {
-                        case "Selection sort" -> SortingAlgorithms.selectionSort(list.getData().get(0).getData());
-                        case "Bubble sort" -> SortingAlgorithms.bubbleSort(list.getData().get(0).getData());
-                        case "Insertion sort" -> SortingAlgorithms.insertionSort(list.getData().get(0).getData());
-                        case "Quick sort" -> SortingAlgorithms.quickSort(list.getData().get(0).getData());
-                        case "Merge sort" -> SortingAlgorithms.mergeSort(list.getData().get(0).getData());
+                        case "Selection sort" -> SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
+                        case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
+                        case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
+                        case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData());
+                        case "Merge sort" -> SortingAlgorithms.mergeSort(barChart.getData().get(0).getData());
                         default -> throw new Exception();
                     }
                 } catch (NullPointerException ignored) {
