@@ -45,7 +45,6 @@ public class MainController {
     public void initialize() {
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
-        //barChart = new BarChart<>(xAxis, yAxis);
 
         arraySizeSlider.setValue(DEFAULT_ARRAY_SIZE);
         arraySizeValueLabel.setText(Integer.toString(DEFAULT_ARRAY_SIZE));
@@ -62,7 +61,6 @@ public class MainController {
         currentDelay = DEFAULT_DELAY;
 
         fillArray();
-        initializeBarChart();
 
         arraySizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             barsNumber = (int) arraySizeSlider.getValue();
@@ -90,17 +88,27 @@ public class MainController {
     }
 
     public void initializeBarChart() {
+        barChart.setLegendVisible(false);
+        barChart.setHorizontalGridLinesVisible(false);
+        barChart.setVerticalGridLinesVisible(false);
+        barChart.setHorizontalZeroLineVisible(false);
+        barChart.setVerticalZeroLineVisible(false);
         barChart.setBarGap(0);
+        barChart.setAnimated(false);
     }
 
     public void fillArray() {
         XYChart.Series series = new XYChart.Series();
         barChart = new BarChart(xAxis, yAxis);
+        initializeBarChart();
         for (int i = 0; i < barsNumber; i++) {
             series.getData().add(new XYChart.Data(Integer.toString(i), new Random().nextInt(valueRange) + 1));
         }
         barChart.getData().add(series);
         pane.setCenter(barChart);
+
+        for (int i = 0; i < barsNumber; i++)
+            ((XYChart.Data<String, Integer>) series.getData().get(i)).getNode().setStyle("-fx-background-color:#00D8FA");
     }
 
     public static void delay() {
