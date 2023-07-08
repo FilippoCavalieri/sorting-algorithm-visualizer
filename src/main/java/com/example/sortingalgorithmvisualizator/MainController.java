@@ -4,9 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -46,6 +44,12 @@ public class MainController {
     private static final int DEFAULT_DELAY = 100;
     private static final int MAX_DELAY = 1000;
     private static final double MIN_DELAY_SIZE_RATIO= 0.25;
+
+    private static final String RUBY = "-fx-background-color: #CC0066";
+    private static final String LIGHT_LIME = "-fx-background-color: #99FF99";
+    private static final String CYAN = "-fx-background-color: #3399FF";
+    private static final String YELLOW = "-fx-background-color: #FFFF00";
+
 
     private BarChart<String, Number> barChart;
     private CategoryAxis xAxis;
@@ -91,8 +95,22 @@ public class MainController {
             arrayRangeValueLabel.setText(Integer.toString(valueRange));
         });
 
+        delayPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            if(newValue.length() < 1){
+                delayPicker.getEditor().setText("");
+            }
+            else if (!newValue.matches("\\d*")) {
+                delayPicker.getEditor().setText(oldValue);
+            }
+            else if (Long.parseLong(newValue) > Integer.MAX_VALUE){
+                delayPicker.getEditor().setText(oldValue);
+            }
+        });
+
         delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            try{
+            try {
+                Integer.parseInt(delayPicker.getEditor().textProperty().get());
                 if(delayPicker.getValue() < barsNumber * MIN_DELAY_SIZE_RATIO){
                     currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
                 }
@@ -100,9 +118,10 @@ public class MainController {
                     currentDelay = delayPicker.getValue();
                 }
                 delaySpinner.setValue(Math.toIntExact(currentDelay));
-            }catch (Exception ignored){
-
+            } catch (NumberFormatException ignored){
+                currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
             }
+            delaySpinner.setValue(Math.toIntExact(currentDelay));
         });
 
         sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
@@ -131,7 +150,7 @@ public class MainController {
         pane.setCenter(barChart);
 
         for (int i = 0; i < barsNumber; i++)
-            series.getData().get(i).getNode().setStyle("-fx-background-color:#CC0066");
+            series.getData().get(i).getNode().setStyle(RUBY);
     }
 
     private static void delay() {
@@ -153,10 +172,12 @@ public class MainController {
 
     @FXML
     public void handleSort() {
+        delayPicker.setEditable(false);
         sortButton.setDisable(true);
         sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
         if (sortingAlgorithm == null) {
             showNoSelectedAlgorithmAlert();
+            delayPicker.setEditable(true);
         }
         Task task = new Task() {
             @Override
@@ -175,6 +196,7 @@ public class MainController {
                         timeElapsedValueLabel.setText(Long.toString(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime)) + " s");
                         timeElapsedLabel.setVisible(true);
                         timeElapsedValueLabel.setVisible(true);
+                        delayPicker.setEditable(true);
                     });
                 } catch (NullPointerException ignored) {
 
@@ -210,18 +232,18 @@ public class MainController {
 
         private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
             int maxIndex = 0; //Hp: first element is the max
-            list.get(maxIndex).getNode().setStyle("-fx-background-color: #FFFF00");
+            list.get(maxIndex).getNode().setStyle(YELLOW);
             for (int i = 1; i < range; ++i) {
-                list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
+                list.get(i).getNode().setStyle(CYAN);
                 delay();
                 if (list.get(i).getYValue().intValue() > list.get(maxIndex).getYValue().intValue()) {
-                    list.get(maxIndex).getNode().setStyle("-fx-background-color: #CC0066");
+                    list.get(maxIndex).getNode().setStyle(RUBY);
                     delay();
                     maxIndex = i;
-                    list.get(maxIndex).getNode().setStyle("-fx-background-color: #FFFF00");
+                    list.get(maxIndex).getNode().setStyle(YELLOW);
                 }
                 else{
-                    list.get(i).getNode().setStyle("-fx-background-color: #CC0066");
+                    list.get(i).getNode().setStyle(RUBY);
                 }
             }
             return maxIndex;
@@ -234,11 +256,11 @@ public class MainController {
                 if (maxIndex < listSize - 1) {
                     delay();
                     swap(list, maxIndex, listSize - 1);
-                    list.get(maxIndex).getNode().setStyle("-fx-background-color: #CC0066");
+                    list.get(maxIndex).getNode().setStyle(RUBY);
                 }
-                list.get(listSize - 1).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(listSize - 1).getNode().setStyle(LIGHT_LIME);
             }
-            list.get(0).getNode().setStyle("-fx-background-color: #99FF99");
+            list.get(0).getNode().setStyle(LIGHT_LIME);
         }
 
         public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list) {
@@ -247,33 +269,33 @@ public class MainController {
             for (; listSize > 1 && !ordered; listSize--) {
                 ordered = true; //Hp: the list is ordered
                 for (int i = 0; i < listSize - 1; i++) {
-                    list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
-                    list.get(i + 1).getNode().setStyle("-fx-background-color: #3399FF");
+                    list.get(i).getNode().setStyle(CYAN);
+                    list.get(i + 1).getNode().setStyle(CYAN);
                     delay();
                     if (list.get(i).getYValue().intValue() >= list.get(i + 1).getYValue().intValue()) {
                         swap(list, i, i + 1);
                         ordered = false;
                     }
-                    list.get(i).getNode().setStyle("-fx-background-color: #CC0066");
-                    list.get(i + 1).getNode().setStyle("-fx-background-color: #CC0066");
+                    list.get(i).getNode().setStyle(RUBY);
+                    list.get(i + 1).getNode().setStyle(RUBY);
                 }
-                list.get(listSize - 1).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(listSize - 1).getNode().setStyle(LIGHT_LIME);
             }
             for(int i = listSize; i >= 0; i--){
                 delay();
-                list.get(i).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(i).getNode().setStyle(LIGHT_LIME);
             }
         }
 
         private static void insertMin(ObservableList<XYChart.Data<String, Number>> list, int lastPos) {
             int i, lastValue = list.get(lastPos).getYValue().intValue();
             for (i = lastPos - 1; i >= 0 && lastValue < list.get(i).getYValue().intValue(); i--) {
-                list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
-                list.get(i + 1).getNode().setStyle("-fx-background-color: #3399FF");
+                list.get(i).getNode().setStyle(CYAN);
+                list.get(i + 1).getNode().setStyle(CYAN);
                 delay();
                 swap(list, i + 1, i);
-                list.get(i).getNode().setStyle("-fx-background-color: #99FF99");
-                list.get(i + 1).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(i).getNode().setStyle(LIGHT_LIME);
+                list.get(i + 1).getNode().setStyle(LIGHT_LIME);
             }
             list.get(i + 1).setYValue(lastValue);
         }
@@ -288,31 +310,31 @@ public class MainController {
             int pivot, i, j, pivotIndex;
             if (first < last) {
                 for(int k = first; k <= last; k++){
-                    list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
+                    list.get(k).getNode().setStyle(LIGHT_LIME);
                 }
                 i = first;
                 j = last;
                 pivotIndex = (first + last) / 2;
                 pivot = list.get(pivotIndex).getYValue().intValue();
-                list.get(pivotIndex).getNode().setStyle("-fx-background-color: #FFFF00");
+                list.get(pivotIndex).getNode().setStyle(YELLOW);
                 do {
                     for (; list.get(i).getYValue().intValue() < pivot; i++);
                     for (; list.get(j).getYValue().intValue() > pivot; j--);
 
                     if (i <= j) {
-                        list.get(i).getNode().setStyle("-fx-background-color: #3399FF");
-                        list.get(j).getNode().setStyle("-fx-background-color: #3399FF");
+                        list.get(i).getNode().setStyle(CYAN);
+                        list.get(j).getNode().setStyle(CYAN);
                         delay();
                         swap(list, i, j);
-                        list.get(i).getNode().setStyle("-fx-background-color: #99FF99");
-                        list.get(j).getNode().setStyle("-fx-background-color: #99FF99");
-                        list.get(pivotIndex).getNode().setStyle("-fx-background-color: #FFFF00");
+                        list.get(i).getNode().setStyle(LIGHT_LIME);
+                        list.get(j).getNode().setStyle(LIGHT_LIME);
+                        list.get(pivotIndex).getNode().setStyle(YELLOW);
                         i++;
                         j--;
                     }
                 } while (i <= j);
                 for(int k = first; k <= last; k++){
-                    list.get(k).getNode().setStyle("-fx-background-color: #CC0066");
+                    list.get(k).getNode().setStyle(RUBY);
                 }
                 quickSortRec(list, first, j);
                 quickSortRec(list, i, last);
@@ -331,41 +353,41 @@ public class MainController {
                 tmp.add(data.getYValue());
             }
             for(int y = first; y <= last; y++){
-                list.get(y).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(y).getNode().setStyle(LIGHT_LIME);
             }
             while (i <= mid && j <= last) {
                 if ((int) tmp.get(i) < (int) tmp.get(j)) {
-                    list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
+                    list.get(k).getNode().setStyle(CYAN);
                     delay();
                     list.get(k).setYValue(tmp.get(i));
-                    list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
+                    list.get(k).getNode().setStyle(LIGHT_LIME);
                     i++;
                     k++;
                 } else {
-                    list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
+                    list.get(k).getNode().setStyle(CYAN);
                     delay();
                     list.get(k).setYValue(tmp.get(j));
-                    list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
+                    list.get(k).getNode().setStyle(LIGHT_LIME);
                     j++;
                     k++;
                 }
             }
             for (; i <= mid; i++) {
-                list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
+                list.get(k).getNode().setStyle(CYAN);
                 delay();
                 list.get(k).setYValue(tmp.get(i));
-                list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(k).getNode().setStyle(LIGHT_LIME);
                 k++;
             }
             for (; j <= last; j++) {
-                list.get(k).getNode().setStyle("-fx-background-color: #3399FF");
+                list.get(k).getNode().setStyle(CYAN);
                 delay();
                 list.get(k).setYValue(tmp.get(j));
-                list.get(k).getNode().setStyle("-fx-background-color: #99FF99");
+                list.get(k).getNode().setStyle(LIGHT_LIME);
                 k++;
             }
             for(int y = first; y <= last; y++){
-                list.get(y).getNode().setStyle("-fx-background-color: #CC0066");
+                list.get(y).getNode().setStyle(RUBY);
             }
         }
 
@@ -389,14 +411,14 @@ public class MainController {
     @FXML
     public void handleAbout() {
 
-        Hyperlink linkGA = new Hyperlink("Gabriele Aldovardi -> GitHub");
+        Hyperlink linkGA = new Hyperlink("https://github.com/GabrieleAldovardi");
         linkGA.setOnAction(e -> openWebPage("https://github.com/GabrieleAldovardi"));
 
-        Hyperlink linkFC = new Hyperlink("Filippo Cavalieri -> GitHub");
+        Hyperlink linkFC = new Hyperlink("https://github.com/FilippoCavalieri");
         linkFC.setOnAction(e -> openWebPage("https://github.com/FilippoCavalieri"));
 
         VBox vbox = new VBox();
-        Label description = new Label("Here some references:");
+        Label description = new Label("Here you can find more details:");
         vbox.getChildren().addAll(description, linkGA, linkFC);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -444,7 +466,7 @@ public class MainController {
                         "trivial case consists of a sub-array of one element.\nTime complexity:\t• best case: O(n log" +
                         " n)\t• worst case: O(n²)");
                 case "Merge sort" -> tooltip.setText("A different version of the quick. Sorts the array by" +
-                        "partitioning\nit in two sub-arrays having the same size, sorting them apart\nand then " +
+                        " partitioning\nit in two sub-arrays having the same size, sorting them apart\nand then " +
                         "finally merging them.\nTime complexity:\t• best case: O(n log n)\t• worst case: O(n log n)");
             }
             tooltip.setStyle("-fx-background-color: grey");
