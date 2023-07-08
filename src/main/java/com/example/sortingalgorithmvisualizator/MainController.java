@@ -43,7 +43,7 @@ public class MainController {
     private static final int MIN_DELAY = 0;
     private static final int DEFAULT_DELAY = 100;
     private static final int MAX_DELAY = 1000;
-    private static final double MIN_DELAY_SIZE_RATIO= 0.2;
+    private static final double MIN_DELAY_SIZE_RATIO= 0.25;
 
     private static final String RUBY = "-fx-background-color: #CC0066";
     private static final String LIGHT_LIME = "-fx-background-color: #99FF99";
@@ -95,8 +95,22 @@ public class MainController {
             arrayRangeValueLabel.setText(Integer.toString(valueRange));
         });
 
+        delayPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            if(newValue.length() < 1){
+                delayPicker.getEditor().setText("");
+            }
+            else if (!newValue.matches("\\d*")) {
+                delayPicker.getEditor().setText(oldValue);
+            }
+            else if (Long.parseLong(newValue) > Integer.MAX_VALUE){
+                delayPicker.getEditor().setText(oldValue);
+            }
+        });
+
         delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            try{
+            try {
+                Integer.parseInt(delayPicker.getEditor().textProperty().get());
                 if(delayPicker.getValue() < barsNumber * MIN_DELAY_SIZE_RATIO){
                     currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
                 }
@@ -104,9 +118,10 @@ public class MainController {
                     currentDelay = delayPicker.getValue();
                 }
                 delaySpinner.setValue(Math.toIntExact(currentDelay));
-            }catch (Exception ignored){
-
+            } catch (NumberFormatException ignored){
+                currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
             }
+            delaySpinner.setValue(Math.toIntExact(currentDelay));
         });
 
         sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
@@ -157,10 +172,12 @@ public class MainController {
 
     @FXML
     public void handleSort() {
+        delayPicker.setEditable(false);
         sortButton.setDisable(true);
         sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
         if (sortingAlgorithm == null) {
             showNoSelectedAlgorithmAlert();
+            delayPicker.setEditable(true);
         }
         Task task = new Task() {
             @Override
@@ -179,6 +196,7 @@ public class MainController {
                         timeElapsedValueLabel.setText(Long.toString(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime)) + " s");
                         timeElapsedLabel.setVisible(true);
                         timeElapsedValueLabel.setVisible(true);
+                        delayPicker.setEditable(true);
                     });
                 } catch (NullPointerException ignored) {
 
