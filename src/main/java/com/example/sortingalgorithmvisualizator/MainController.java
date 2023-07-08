@@ -4,9 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -395,14 +393,14 @@ public class MainController {
     @FXML
     public void handleAbout() {
 
-        Hyperlink linkGA = new Hyperlink("Gabriele Aldovardi -> GitHub");
+        Hyperlink linkGA = new Hyperlink("https://github.com/GabrieleAldovardi");
         linkGA.setOnAction(e -> openWebPage("https://github.com/GabrieleAldovardi"));
 
-        Hyperlink linkFC = new Hyperlink("Filippo Cavalieri -> GitHub");
+        Hyperlink linkFC = new Hyperlink("https://github.com/FilippoCavalieri");
         linkFC.setOnAction(e -> openWebPage("https://github.com/FilippoCavalieri"));
 
         VBox vbox = new VBox();
-        Label description = new Label("Here some references:");
+        Label description = new Label("Here you can find more details:");
         vbox.getChildren().addAll(description, linkGA, linkFC);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
