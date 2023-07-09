@@ -121,8 +121,8 @@ public class MainController {
             delaySpinner.setValue(Math.toIntExact(currentDelay));
         });
 
-        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Bogo sort", "Bubble sort", "Cocktail sort",
-                "Heap sort", "Insertion sort", "Merge sort", "Quick sort", "Selection sort"));
+        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Bubble sort", "Cocktail sort", "Heap " +
+                "sort", "Insertion sort", "Merge sort", "Quick sort", "Radix sort","Selection sort"));
     }
 
     public void initializeBarChart() {
@@ -177,13 +177,13 @@ public class MainController {
                 try {
                     long startTime = System.nanoTime();
                     switch (sortingAlgorithm) {
-                        case "Bogo sort" -> BogoSort.bogoSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Bubble sort" -> BubbleSort.bubbleSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Cocktail sort" -> CocktailSort.cocktailSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Heap sort" -> HeapSort.heapSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Insertion sort" -> InsertionSort.insertionSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Merge sort" -> MergeSort.mergeSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Quick sort" -> QuickSort.quickSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Radix sort" -> RadixSort.radixSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Selection sort" -> SelectionSort.selectionSort(barChart.getData().get(0).getData(), selectedColor);
                         default -> throw new Exception();
                     }
