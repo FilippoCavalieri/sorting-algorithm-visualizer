@@ -3,6 +3,11 @@ package com.example.sortingalgorithmvisualizator;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
+/**
+ * Implements the heap sort algorithm.
+ *
+ * @see "https://en.wikipedia.org/wiki/Heapsort"
+ */
 public class HeapSort extends SortingAlgorithm {
     public static void heapSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         int n = list.size();

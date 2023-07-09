@@ -9,7 +9,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Implements the radix sort algorithm.
+ */
 public class RadixSort extends SortingAlgorithm {
+    public static void radixSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor)
+    {
+        int max = getMax(list);
+        String[] colors = new String[]{CYAN, LIGHT_LIME, RED};
+        for (int exp = 1, i = 0; max / exp > 0; exp *= 10, i++)
+            countSort(list, exp, colors[i]);
+
+    }
+
     static int getMax(ObservableList<XYChart.Data<String, Number>> list)
     {
         int max = list.get(0).getYValue().intValue();
@@ -52,14 +64,4 @@ public class RadixSort extends SortingAlgorithm {
             count[(tmp.get(i).intValue() / exp) % 10]--;
         }
     }
-
-    public static void radixSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor)
-    {
-        int max = getMax(list);
-        String[] colors = new String[]{CYAN, LIGHT_LIME, YELLOW, RED};
-        for (int exp = 1, i = 0; max / exp > 0; exp *= 10, i++)
-            countSort(list, exp, colors[i]);
-
-    }
-
 }

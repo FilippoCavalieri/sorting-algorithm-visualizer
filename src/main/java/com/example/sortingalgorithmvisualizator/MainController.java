@@ -156,9 +156,6 @@ public class MainController {
         sortButton.setDisable(false);
         timeElapsedLabel.setVisible(false);
         timeElapsedValueLabel.setVisible(false);
-        delayPicker.setDisable(false);
-        arraySizeSlider.setDisable(false);
-        arrayRangeSlider.setDisable(false);
     }
 
     @FXML
@@ -196,6 +193,9 @@ public class MainController {
                             timeElapsedLabel.setVisible(true);
                             timeElapsedValueLabel.setVisible(true);
                             delayPicker.setEditable(true);
+                            delayPicker.setDisable(false);
+                            arraySizeSlider.setDisable(false);
+                            arrayRangeSlider.setDisable(false);
                         }
                     });
                 } catch (NullPointerException ignored) {
@@ -267,16 +267,28 @@ public class MainController {
                         wrong order. At the end of each iteration the max element will be at
                         the end of the considered sub-array. If during an iteration no
                         elements have been swapped then the array is sorted.
-                        Time complexity:\t• best case: O(n)\t• worst case: O(n²)""");
-                case "Cocktail sort" -> tooltip.setText("Sì ma di Miguel");
+                        Time complexity:\t• best case: O(n)\t• worst case: O(n²)
+                        """);
+                case "Cocktail sort" -> tooltip.setText("""
+                        A different version of the bubble sort. Sorts the array by iterating over it.
+                        With the first iteration the max element will be at the end of the array.
+                        With the second iteration the min element will be at the end of the array, and so on.
+                        If during an iteration no elements have been swapped then the array is sorted.
+                        Time complexity:\t• best case: O(n)\t• worst case: O(n²)
+                        """);
+                case "Heap sort" -> tooltip.setText("""
+                        Here's the story of the Hurricane
+                        """);
                 case "Insertion sort" -> tooltip.setText("""
                         Sorts the array by building a new ordered array, in which
                         each element is inserted the right place.
-                        Time complexity:\t• best case: O(n)\t• worst case: O(n²)""");
+                        Time complexity:\t• best case: O(n)\t• worst case: O(n²)
+                        """);
                 case "Merge sort" -> tooltip.setText("""
-                        A different version of the quick. Sorts the array by partitioning
+                        A different version of the quick sort. Sorts the array by partitioning
                         it in two sub-arrays having the same size, sorting them apart and then finally merging them.
-                        Time complexity:\t• best case: O(n log n)\t• worst case: O(n log n)""");
+                        Time complexity:\t• best case: O(n log n)\t• worst case: O(n log n)
+                        """);
                 case "Quick sort" -> tooltip.setText("""
                         Sorts the array by partitioning it in two sub-arrays, delimited
                         by a pivot element. The first sub-array contains only elements
@@ -284,12 +296,14 @@ public class MainController {
                         only elements larger then the pivot. The two sub-arrays can then be\n
                         ordered apart by applying the same procedure. The algorithm is
                         recursive, the trivial case consists of a sub-array of one element.\n
-                        Time complexity:\t• best case: O(n log n)\\t• worst case: O(n²)""");
+                        Time complexity:\t• best case: O(n log n)\\t• worst case: O(n²)
+                        """);
                 case "Selection sort" -> tooltip.setText("""
                         Sorts the array by dividing it in two parts: a sorted sub-array which
                         is built up from right to left and and a sub-array of the remaining
                         unsorted elements that occupy the rest of the array.
-                        Time complexity:\t• best case: O(n²)\\t• worst case: O(n²)""");
+                        Time complexity:\t• best case: O(n²)\\t• worst case: O(n²)
+                        """);
             }
             tooltip.setStyle("-fx-background-color: grey");
             tooltip.setStyle("-fx-show-duration: 40s");

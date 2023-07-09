@@ -3,7 +3,19 @@ package com.example.sortingalgorithmvisualizator;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
-public class CocktailSort extends SortingAlgorithm{
+/**
+ * Implements the cocktail sort algorithm.
+ *
+ * @see "https://it.wikipedia.org/wiki/Shaker_sort"
+ */
+public class CocktailSort extends SortingAlgorithm {
+
+    /**
+     * Sorts the given list.
+     *
+     * @param list the ObservableList we want to sort
+     * @param elementsColor the default color of the list's element
+     */
     public static void cocktailSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         boolean swapped;
         int start = 0;
@@ -48,7 +60,7 @@ public class CocktailSort extends SortingAlgorithm{
             }
         } while (swapped);
 
-        for(int i = start; i <= end; i++) {
+        for (int i = start; i <= end; i++) {
             list.get(i).getNode().setStyle(LIGHT_LIME);
         }
     }
