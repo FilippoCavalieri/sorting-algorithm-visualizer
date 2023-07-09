@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 public class BubbleSort extends SortingAlgorithm {
-    public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list) {
+    public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         boolean ordered = false;
         int listSize = list.size();
         for (; listSize > 1 && !ordered; listSize--) {
@@ -17,8 +17,8 @@ public class BubbleSort extends SortingAlgorithm {
                     swap(list, i, i + 1);
                     ordered = false;
                 }
-                list.get(i).getNode().setStyle(RUBY);
-                list.get(i + 1).getNode().setStyle(RUBY);
+                list.get(i).getNode().setStyle(elementsColor);
+                list.get(i + 1).getNode().setStyle(elementsColor);
             }
             list.get(listSize - 1).getNode().setStyle(LIGHT_LIME);
         }

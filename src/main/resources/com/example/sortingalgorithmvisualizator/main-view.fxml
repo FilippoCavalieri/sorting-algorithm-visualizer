@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
@@ -9,6 +11,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
 
 <BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sortingalgorithmvisualizator.MainController">
     <top>
@@ -76,10 +79,12 @@
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="22.666658401489258" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="83.66668446858723" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="587.6000244140625" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.3332901000977" minWidth="10.0" prefWidth="126.79997558593755" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="824.3333333333334" minWidth="10.0" prefWidth="79.33331298828125" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="111.99999618530273" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="419.1999755859376" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="803.3333740234375" minWidth="10.0" prefWidth="148.20001220703125" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.3332901000977" minWidth="0.20004882812497726" prefWidth="35.5999755859375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.3332901000977" minWidth="10.0" prefWidth="126.00002441406252" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="824.3333333333334" minWidth="10.0" prefWidth="93.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="357.66668701171875" minWidth="0.0" prefWidth="10.000020345052121" />
             </columnConstraints>
             <rowConstraints>
@@ -87,9 +92,9 @@
                 <RowConstraints maxHeight="25.3333740234375" minHeight="3.999998092651367" prefHeight="12.666685104370117" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="63.0" text="Reset" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="63.0" text="Reset" GridPane.columnIndex="6" GridPane.halignment="CENTER" />
                 <Button fx:id="aboutButton" mnemonicParsing="false" onAction="#handleAbout" text="About Us" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <GridPane GridPane.columnIndex="3">
+            <GridPane GridPane.columnIndex="5">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="107.4" minWidth="10.0" prefWidth="86.4000244140625" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="67.9999755859375" minWidth="10.0" prefWidth="47.999975585937506" />
@@ -102,6 +107,14 @@
                   <Label fx:id="timeElapsedValueLabel" text="0 s" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
                </children>
             </GridPane>
+            <ColorPicker fx:id="arrayColorPicker" prefHeight="26.0" prefWidth="114.0" promptText="Color" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+               <value>
+                  <Color red="0.800000011920929" blue="0.4000000059604645" />
+               </value>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ColorPicker>
             </children>
         </GridPane>
     </bottom>

@@ -7,7 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MergeSort extends SortingAlgorithm {
-    private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int first, int mid, int last) {
+    public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
+        mergeSortRec(list, 0, list.size() - 1, elementsColor);
+    }
+
+    private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last,
+                                     String elementsColor) {
+        int mid;
+        if (first < last) {
+            mid = (first + last) / 2;
+
+            mergeSortRec(list, first, mid, elementsColor);
+            mergeSortRec(list, mid + 1, last, elementsColor);
+
+            mergeOperation(list, first, mid, last, elementsColor);
+        }
+    }
+
+    private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int first, int mid,
+                                       int last, String elementsColor) {
         int i = first, j = mid + 1, k = first;
         List<Number> tmp = new ArrayList<>();
 
@@ -49,23 +67,7 @@ public class MergeSort extends SortingAlgorithm {
             k++;
         }
         for(int y = first; y <= last; y++){
-            list.get(y).getNode().setStyle(RUBY);
+            list.get(y).getNode().setStyle(elementsColor);
         }
-    }
-
-    private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
-        int mid;
-        if (first < last) {
-            mid = (first + last) / 2;
-
-            mergeSortRec(list, first, mid);
-            mergeSortRec(list, mid + 1, last);
-
-            mergeOperation(list, first, mid, last);
-        }
-    }
-
-    public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
-        mergeSortRec(list, 0, list.size() - 1);
     }
 }

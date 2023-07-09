@@ -37,20 +37,23 @@ public class MainController {
     @FXML
     private Spinner<Integer> delayPicker;
 
+    @FXML
+    private ColorPicker arrayColorPicker;
+
     private static final int DEFAULT_ARRAY_SIZE = 50;
     private static final int DEFAULT_ARRAY_RANGE = 100;
     private static final int MIN_DELAY = 0;
     private static final int DEFAULT_DELAY = 100;
     private static final int MAX_DELAY = 1000;
     private static final double MIN_DELAY_SIZE_RATIO= 0.25;
-
+    private static final String DEFAULT_ARRAY_COLOR = "-fx-background-color: #CC0066";
 
     private BarChart<String, Number> barChart;
     private CategoryAxis xAxis;
     private NumberAxis yAxis;
     private static int barsNumber, valueRange;
     static long currentDelay;
-    private String sortingAlgorithm;
+    private String sortingAlgorithm, selectedColor;
 
     @FXML
     public void initialize() {
@@ -74,8 +77,9 @@ public class MainController {
         barsNumber = DEFAULT_ARRAY_SIZE;
         valueRange = DEFAULT_ARRAY_RANGE;
         currentDelay = DEFAULT_DELAY;
+        selectedColor = DEFAULT_ARRAY_COLOR;
 
-        fillArray();
+        fillArray(selectedColor);
 
         arraySizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             barsNumber = (int) arraySizeSlider.getValue();
@@ -117,8 +121,8 @@ public class MainController {
             delaySpinner.setValue(Math.toIntExact(currentDelay));
         });
 
-        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Bogo sort", "Selection sort", "Bubble " +
-                "sort", "Cocktail sort", "Insertion sort", "Heap sort", "Quick sort", "Merge sort"));
+        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Bogo sort", "Bubble sort", "Cocktail sort",
+                "Heap sort", "Insertion sort", "Merge sort", "Quick sort", "Selection sort"));
     }
 
     public void initializeBarChart() {
@@ -133,7 +137,7 @@ public class MainController {
         barChart.setAnimated(false);
     }
 
-    private void fillArray() {
+    private void fillArray(String selectedColor) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         barChart = new BarChart<>(xAxis, yAxis);
         initializeBarChart();
@@ -143,14 +147,16 @@ public class MainController {
         barChart.getData().add(series);
         pane.setCenter(barChart);
 
+        System.out.println(selectedColor + "!");
         for (int i = 0; i < barsNumber; i++)
-            series.getData().get(i).getNode().setStyle(SortingAlgorithm.RUBY);
+            series.getData().get(i).getNode().setStyle(selectedColor);
     }
 
     @FXML
     public void handleReset() {
         barChart.getData().clear();
-        fillArray();
+        selectedColor = "-fx-background-color: #" + String.valueOf(arrayColorPicker.getValue()).substring(2, 8);
+        fillArray(selectedColor);
         sortButton.setDisable(false);
         timeElapsedLabel.setVisible(false);
         timeElapsedValueLabel.setVisible(false);
@@ -172,14 +178,14 @@ public class MainController {
                 try {
                     long startTime = System.nanoTime();
                     switch (sortingAlgorithm) {
-                        case "Selection sort" -> SelectionSort.selectionSort(barChart.getData().get(0).getData());
-                        case "Bubble sort" -> BubbleSort.bubbleSort(barChart.getData().get(0).getData());
-                        case "Insertion sort" -> InsertionSort.insertionSort(barChart.getData().get(0).getData());
-                        case "Quick sort" -> QuickSort.quickSort(barChart.getData().get(0).getData());
-                        case "Merge sort" -> MergeSort.mergeSort(barChart.getData().get(0).getData());
-                        case "Bogo sort" -> BogoSort.bogoSort(barChart.getData().get(0).getData());
-                        case "Cocktail sort" -> CocktailSort.cocktailSort(barChart.getData().get(0).getData());
-                        case "Heap sort" -> HeapSort.heapSort(barChart.getData().get(0).getData());
+                        case "Bogo sort" -> BogoSort.bogoSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Bubble sort" -> BubbleSort.bubbleSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Cocktail sort" -> CocktailSort.cocktailSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Heap sort" -> HeapSort.heapSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Insertion sort" -> InsertionSort.insertionSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Merge sort" -> MergeSort.mergeSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Quick sort" -> QuickSort.quickSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Selection sort" -> SelectionSort.selectionSort(barChart.getData().get(0).getData(), selectedColor);
                         default -> throw new Exception();
                     }
                     Platform.runLater(() -> {

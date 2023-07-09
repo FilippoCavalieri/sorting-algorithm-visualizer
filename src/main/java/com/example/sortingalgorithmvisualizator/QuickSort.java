@@ -4,7 +4,12 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 public class QuickSort extends SortingAlgorithm {
-    private static void quickSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
+    public static void quickSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
+        quickSortRec(list, 0, list.size() - 1, elementsColor);
+    }
+
+    private static void quickSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last,
+                                     String elementsColor) {
         int pivot, i, j, pivotIndex;
         if (first < last) {
             for(int k = first; k <= last; k++){
@@ -32,14 +37,10 @@ public class QuickSort extends SortingAlgorithm {
                 }
             } while (i <= j);
             for(int k = first; k <= last; k++){
-                list.get(k).getNode().setStyle(RUBY);
+                list.get(k).getNode().setStyle(elementsColor);
             }
-            quickSortRec(list, first, j);
-            quickSortRec(list, i, last);
+            quickSortRec(list, first, j, elementsColor);
+            quickSortRec(list, i, last, elementsColor);
         }
-    }
-
-    public static void quickSort(ObservableList<XYChart.Data<String, Number>> list) {
-        quickSortRec(list, 0, list.size() - 1);
     }
 }

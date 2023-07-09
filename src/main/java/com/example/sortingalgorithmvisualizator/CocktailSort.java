@@ -4,20 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 public class CocktailSort extends SortingAlgorithm{
-    private static boolean checkIfSwapped(ObservableList<XYChart.Data<String, Number>> list, int i) {
-        boolean ret = false;
-        list.get(i).getNode().setStyle(CYAN);
-        list.get(i + 1).getNode().setStyle(CYAN);
-        delay();
-        if (list.get(i).getYValue().intValue() > list.get(i + 1).getYValue().intValue()) {
-            swap(list, i, i + 1);
-            ret = true;
-        }
-        list.get(i).getNode().setStyle(RUBY);
-        list.get(i + 1).getNode().setStyle(RUBY);
-        return ret;
-    }
-    public static void cocktailSort(ObservableList<XYChart.Data<String, Number>> list) {
+    public static void cocktailSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         boolean swapped;
         int start = 0;
         int end = list.size() - 1;
@@ -25,10 +12,10 @@ public class CocktailSort extends SortingAlgorithm{
         do {
             swapped = false;
 
-            // Scorrimento verso destra
+            //Right sliding
             int i;
             for (i = start; i < end; i++) {
-                swapped = checkIfSwapped(list, i);
+                swapped = checkIfSwapped(list, i, elementsColor);
             }
             list.get(i).getNode().setStyle(LIGHT_LIME);
 
@@ -36,9 +23,9 @@ public class CocktailSort extends SortingAlgorithm{
                 swapped = false;
                 end--;
 
-                // Scorrimento verso sinistra
+                //Left sliding
                 for (i = end - 1; i >= start; i--) {
-                    swapped = checkIfSwapped(list, i);
+                    swapped = checkIfSwapped(list, i, elementsColor);
                 }
                 list.get(i + 1).getNode().setStyle(LIGHT_LIME);
                 start++;
@@ -48,5 +35,20 @@ public class CocktailSort extends SortingAlgorithm{
         for(int i = start; i <= end; i++) {
             list.get(i).getNode().setStyle(LIGHT_LIME);
         }
+    }
+
+    private static boolean checkIfSwapped(ObservableList<XYChart.Data<String, Number>> list, int i,
+                                          String elementsColor) {
+        boolean ret = false;
+        list.get(i).getNode().setStyle(CYAN);
+        list.get(i + 1).getNode().setStyle(CYAN);
+        delay();
+        if (list.get(i).getYValue().intValue() > list.get(i + 1).getYValue().intValue()) {
+            swap(list, i, i + 1);
+            ret = true;
+        }
+        list.get(i).getNode().setStyle(elementsColor);
+        list.get(i + 1).getNode().setStyle(elementsColor);
+        return ret;
     }
 }

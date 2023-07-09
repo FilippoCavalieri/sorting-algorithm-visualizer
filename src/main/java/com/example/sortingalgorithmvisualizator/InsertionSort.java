@@ -4,7 +4,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 public class InsertionSort extends SortingAlgorithm {
-    private static void insertMin(ObservableList<XYChart.Data<String, Number>> list, int lastPos) {
+    public static void insertionSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
+        for (int i = 1; i < list.size(); i++) {
+            insertMin(list, i, elementsColor);
+        }
+    }
+    private static void insertMin(ObservableList<XYChart.Data<String, Number>> list, int lastPos,
+                                  String elementsColor) {
         int i, lastValue = list.get(lastPos).getYValue().intValue();
         for (i = lastPos - 1; i >= 0 && lastValue < list.get(i).getYValue().intValue(); i--) {
             list.get(i).getNode().setStyle(CYAN);
@@ -15,11 +21,5 @@ public class InsertionSort extends SortingAlgorithm {
             list.get(i + 1).getNode().setStyle(LIGHT_LIME);
         }
         list.get(i + 1).setYValue(lastValue);
-    }
-
-    public static void insertionSort(ObservableList<XYChart.Data<String, Number>> list) {
-        for (int i = 1; i < list.size(); i++) {
-            insertMin(list, i);
-        }
     }
 }
