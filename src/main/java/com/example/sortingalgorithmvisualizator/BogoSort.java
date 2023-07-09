@@ -18,7 +18,7 @@ public class BogoSort extends SortingAlgorithm {
     private static boolean isSorted(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         for (int i = 1; i < list.size(); i++) {
             if (list.get(i).getYValue().intValue() < list.get(i - 1).getYValue().intValue()) {
-                for(int j = i - 1; j >= 0; j--) {
+                for (int j = i - 1; j >= 0; j--) {
                     list.get(j).getNode().setStyle(elementsColor);
                 }
                 return false;
@@ -29,8 +29,7 @@ public class BogoSort extends SortingAlgorithm {
         return true;
     }
 
-    private static void shuffleArray(ObservableList<XYChart.Data<String, Number>> list, RandomGenerator random,
-                                     String elementsColor) {
+    private static void shuffleArray(ObservableList<XYChart.Data<String, Number>> list, RandomGenerator random, String elementsColor) {
         for (int i = list.size() - 1; i >= 0; i--) {
             int j = random.nextInt(i + 1);
             list.get(i).getNode().setStyle(CYAN);

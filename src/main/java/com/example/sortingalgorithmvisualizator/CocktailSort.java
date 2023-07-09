@@ -25,7 +25,6 @@ public class CocktailSort extends SortingAlgorithm{
                 list.get(i).getNode().setStyle(elementsColor);
                 list.get(i + 1).getNode().setStyle(elementsColor);
             }
-            System.out.println(i);
             list.get(i).getNode().setStyle(LIGHT_LIME);
 
             if (swapped) {

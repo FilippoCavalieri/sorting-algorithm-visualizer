@@ -147,7 +147,6 @@ public class MainController {
         barChart.getData().add(series);
         pane.setCenter(barChart);
 
-        System.out.println(selectedColor + "!");
         for (int i = 0; i < barsNumber; i++)
             series.getData().get(i).getNode().setStyle(selectedColor);
     }
