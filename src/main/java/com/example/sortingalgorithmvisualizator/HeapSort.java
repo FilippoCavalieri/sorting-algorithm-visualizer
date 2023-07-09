@@ -14,7 +14,9 @@ public class HeapSort extends SortingAlgorithm {
         for (int i = n - 1; i > 0; i--) {
             swap(list, 0, i);
             reorder(list, i, 0, elementsColor);
+            list.get(i).getNode().setStyle(LIGHT_LIME);
         }
+        list.get(0).getNode().setStyle(LIGHT_LIME);
     }
 
     private static void reorder(ObservableList<XYChart.Data<String, Number>> list, int n, int i, String elementsColor) {
@@ -41,7 +43,8 @@ public class HeapSort extends SortingAlgorithm {
         if (largest != i) {
             delay();
             swap(list, i, largest);
-            list.get(largest).getNode().setStyle(elementsColor);
+            list.get(i).getNode().setStyle(elementsColor);
+            list.get(largest).getNode().setStyle(YELLOW);
             reorder(list, n, largest, elementsColor);
         }
         list.get(largest).getNode().setStyle(elementsColor);

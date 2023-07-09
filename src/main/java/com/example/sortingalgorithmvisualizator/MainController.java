@@ -51,7 +51,8 @@ public class MainController {
     private BarChart<String, Number> barChart;
     private CategoryAxis xAxis;
     private NumberAxis yAxis;
-    private static int barsNumber, valueRange;
+    static int barsNumber;
+    static int valueRange;
     static long currentDelay;
     private String sortingAlgorithm, selectedColor;
 
@@ -159,17 +160,18 @@ public class MainController {
         sortButton.setDisable(false);
         timeElapsedLabel.setVisible(false);
         timeElapsedValueLabel.setVisible(false);
-        delayPicker.setEditable(true);
+        delayPicker.setDisable(false);
+        arraySizeSlider.setDisable(false);
     }
 
     @FXML
     public void handleSort() {
-        delayPicker.setEditable(false);
+        delayPicker.setDisable(true);
+        arraySizeSlider.setDisable(true);
         sortButton.setDisable(true);
         sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
         if (sortingAlgorithm == null) {
             showNoSelectedAlgorithmAlert();
-            delayPicker.setEditable(true);
         }
         Task task = new Task() {
             @Override
@@ -210,6 +212,7 @@ public class MainController {
 
     private void showNoSelectedAlgorithmAlert() {
         sortButton.setDisable(false);
+        delayPicker.setDisable(false);
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("No Selection");
         alert.setHeaderText("No algorithm selected");

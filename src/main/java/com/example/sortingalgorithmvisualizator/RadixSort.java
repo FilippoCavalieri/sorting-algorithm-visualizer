@@ -2,59 +2,64 @@ package com.example.sortingalgorithmvisualizator;
 
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
+import javafx.scene.paint.Color;
 
+import java.awt.image.ColorConvertOp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RadixSort extends SortingAlgorithm {
-    static int getMax(ObservableList<XYChart.Data<String, Number>> list, int n, String elementsColor)
+    static int getMax(ObservableList<XYChart.Data<String, Number>> list)
     {
         int max = list.get(0).getYValue().intValue();
-        list.get(max).getNode().setStyle(CYAN);
-        for (int i = 1; i < n; i++) {
-            list.get(i).getNode().setStyle(CYAN);
+        for (int i = 1; i < list.size(); i++) {
             if (list.get(i).getYValue().intValue() > max) {
                 max = list.get(i).getYValue().intValue();
-                list.get(max).getNode().setStyle(elementsColor);
             }
         }
         return max;
     }
 
-    // A function to do counting sort of arr[] according to
-    // the digit represented by exp.
-    private static void countSort(ObservableList<XYChart.Data<String, Number>> list, int n, int exp, String elementsColor)
+    // A function to do counting sort of list according to the digit represented by exp.
+    private static void countSort(ObservableList<XYChart.Data<String, Number>> list, int exp, String currentColor)
     {
-        List<Number> tmp = new ArrayList<>(n);
+        List<Number> tmp = new ArrayList<>(list.size());
         for (XYChart.Data<String, Number> data : list) {
             tmp.add(data.getYValue());
         }
 
         int i;
-        List<Number> count = new ArrayList<>(10);
+        int[] count = new int[MainController.valueRange];
+        Arrays.fill(count, 0);
 
-        // Store count of occurrences in count[]
-        for (i = 0; i < n; i++)
-            count.add((tmp.get(i).intValue() / exp) % 10, 1);
+        // Store count of occurrences in count
+        for (i = 0; i < tmp.size(); i++) {
+            int pos = (tmp.get(i).intValue() / exp) % 10;
+            count[pos] += + 1;
+        }
 
-        // Change count[i] so that count[i] now contains
-        // actual position of this digit in output[]
-        for (i = 1; i < 10; i++)
-            count.add(i, tmp.get(i - 1).intValue());
+        //Change count[i] to the sum of the occurrences of the elements less or equal then count[i] in the original list
+        for(i = 1; i < count.length; i++) {
+            count[i] += count[i - 1];
+        }
 
-        // Build the output array
-        for (i = n - 1; i >= 0; i--) {
-            list.get(count.get((tmp.get(i).intValue() / exp) % 10).intValue() - 1).setYValue(tmp.get(i).intValue());
-            count.add((tmp.get(i).intValue() / exp) % 10, -1);
+        // Order the list
+        for (i = list.size() - 1; i >= 0; i--) {
+            list.get(i).getNode().setStyle(currentColor);
+            delay();
+            list.get(count[(tmp.get(i).intValue() / exp) % 10] - 1).setYValue(tmp.get(i).intValue());
+            count[(tmp.get(i).intValue() / exp) % 10]--;
         }
     }
 
     public static void radixSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor)
     {
-        int max = getMax(list, list.size() - 1, elementsColor);
+        int max = getMax(list);
+        String[] colors = new String[]{CYAN, LIGHT_LIME, YELLOW, RED};
+        for (int exp = 1, i = 0; max / exp > 0; exp *= 10, i++)
+            countSort(list, exp, colors[i]);
 
-        for (int exp = 1; max / exp > 0; exp *= 10)
-            countSort(list, list.size(), exp, elementsColor);
     }
 
 }
