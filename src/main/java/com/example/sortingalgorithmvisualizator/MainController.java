@@ -45,7 +45,7 @@ public class MainController {
     private static final int MIN_DELAY = 0;
     private static final int DEFAULT_DELAY = 100;
     private static final int MAX_DELAY = 1000;
-    private static final double MIN_DELAY_SIZE_RATIO= 0.25;
+    private static final double MIN_DELAY_SIZE_RATIO= 0.3;
     private static final String DEFAULT_ARRAY_COLOR = "-fx-background-color: #CC0066";
 
     private BarChart<String, Number> barChart;
