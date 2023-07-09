@@ -162,12 +162,14 @@ public class MainController {
         timeElapsedValueLabel.setVisible(false);
         delayPicker.setDisable(false);
         arraySizeSlider.setDisable(false);
+        arrayRangeSlider.setDisable(false);
     }
 
     @FXML
     public void handleSort() {
         delayPicker.setDisable(true);
         arraySizeSlider.setDisable(true);
+        arrayRangeSlider.setDisable(true);
         sortButton.setDisable(true);
         sortingAlgorithm = sortingAlgorithmChoice.getSelectionModel().getSelectedItem();
         if (sortingAlgorithm == null) {
