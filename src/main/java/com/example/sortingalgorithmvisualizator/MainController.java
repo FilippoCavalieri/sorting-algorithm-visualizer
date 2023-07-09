@@ -33,7 +33,7 @@ public class MainController {
     @FXML
     private Label arraySizeValueLabel, arrayRangeValueLabel, timeElapsedLabel, timeElapsedValueLabel, infoLabel;
     @FXML
-    private Button sortButton, resetButton;
+    private Button sortButton;
     @FXML
     private Spinner<Integer> delayPicker;
 
@@ -45,7 +45,7 @@ public class MainController {
     private static final int MIN_DELAY = 0;
     private static final int DEFAULT_DELAY = 100;
     private static final int MAX_DELAY = 1000;
-    private static final double MIN_DELAY_SIZE_RATIO= 0.4;
+    private static final double MIN_DELAY_SIZE_RATIO = 0.4;
     private static final String DEFAULT_ARRAY_COLOR = "-fx-background-color: #CC0066";
 
     private BarChart<String, Number> barChart;
@@ -95,13 +95,11 @@ public class MainController {
         });
 
         delayPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue.length() < 1){
+            if (newValue.length() < 1) {
                 delayPicker.getEditor().setText("");
-            }
-            else if (!newValue.matches("\\d*")) {
+            } else if (!newValue.matches("\\d*")) {
                 delayPicker.getEditor().setText(oldValue);
-            }
-            else if (Long.parseLong(newValue) > Integer.MAX_VALUE){
+            } else if (Long.parseLong(newValue) > Integer.MAX_VALUE) {
                 delayPicker.getEditor().setText(oldValue);
             }
         });
@@ -109,21 +107,19 @@ public class MainController {
         delayPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 Integer.parseInt(delayPicker.getEditor().textProperty().get());
-                if(delayPicker.getValue() < barsNumber * MIN_DELAY_SIZE_RATIO){
+                if (delayPicker.getValue() < barsNumber * MIN_DELAY_SIZE_RATIO) {
                     currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
-                }
-                else{
+                } else {
                     currentDelay = delayPicker.getValue();
                 }
                 delaySpinner.setValue(Math.toIntExact(currentDelay));
-            } catch (NumberFormatException ignored){
+            } catch (NumberFormatException ignored) {
                 currentDelay = Math.round(barsNumber * MIN_DELAY_SIZE_RATIO);
             }
             delaySpinner.setValue(Math.toIntExact(currentDelay));
         });
 
-        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Bubble sort", "Cocktail sort", "Heap " +
-                "sort", "Insertion sort", "Merge sort", "Quick sort", "Radix sort","Selection sort"));
+        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Bubble sort", "Cocktail sort", "Heap " + "sort", "Insertion sort", "Merge sort", "Quick sort", "Radix sort", "Selection sort"));
     }
 
     public void initializeBarChart() {
@@ -182,27 +178,30 @@ public class MainController {
                     long startTime = System.nanoTime();
                     switch (sortingAlgorithm) {
                         case "Bubble sort" -> BubbleSort.bubbleSort(barChart.getData().get(0).getData(), selectedColor);
-                        case "Cocktail sort" -> CocktailSort.cocktailSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Cocktail sort" ->
+                                CocktailSort.cocktailSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Heap sort" -> HeapSort.heapSort(barChart.getData().get(0).getData(), selectedColor);
-                        case "Insertion sort" -> InsertionSort.insertionSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Insertion sort" ->
+                                InsertionSort.insertionSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Merge sort" -> MergeSort.mergeSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Quick sort" -> QuickSort.quickSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Radix sort" -> RadixSort.radixSort(barChart.getData().get(0).getData(), selectedColor);
-                        case "Selection sort" -> SelectionSort.selectionSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Selection sort" ->
+                                SelectionSort.selectionSort(barChart.getData().get(0).getData(), selectedColor);
                         default -> throw new Exception();
                     }
                     Platform.runLater(() -> {
-                        timeElapsedValueLabel.setText(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime) + " s");
-                        timeElapsedLabel.setVisible(true);
-                        timeElapsedValueLabel.setVisible(true);
-                        delayPicker.setEditable(true);
+                        if (sortButton.isDisabled()) {
+                            timeElapsedValueLabel.setText(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime) + " s");
+                            timeElapsedLabel.setVisible(true);
+                            timeElapsedValueLabel.setVisible(true);
+                            delayPicker.setEditable(true);
+                        }
                     });
                 } catch (NullPointerException ignored) {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                } finally {
-                    resetButton.setDisable(false);
                 }
                 return null;
             }
@@ -238,7 +237,7 @@ public class MainController {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About us");
-        alert.setHeaderText("Hi, we're two Computer Engineers students at UNIMORE, University of Modena and Reggio Emilia");
+        alert.setHeaderText("Hi, we're two Computer Engineering students at UNIMORE, University of Modena and Reggio " + "Emilia");
         alert.getDialogPane().setGraphic(new ImageView(new Image(String.valueOf(this.getClass().getResource("icons/info_icon.png")))));
         alert.getDialogPane().setContent(vbox);
         alert.showAndWait();
@@ -262,27 +261,35 @@ public class MainController {
             infoLabel.setVisible(true);
             Tooltip tooltip = new Tooltip();
             switch (sortingAlgorithm) {
-                case "Selection sort" ->  tooltip.setText("Sorts the array by dividing it in two parts: a " +
-                        "sorted sub-array which\n" + "is built up from right to left and and a sub-array of the " +
-                        "remaining\nunsorted elements that occupy the rest of the array.\n" + "Time complexity:\t• best "
-                        + "case: O(n²)\t• worst case: O(n²)");
-                case "Bubble sort" -> tooltip.setText("Sorts the array by iterating on it. With each iteration compares\n"
-                        + "each pair of adjacent elements, swapping them if they're in the\nwrong order. At the " +
-                        "end of each iteration the max element will be at\nthe end of the considered sub-array. If"
-                        + " during an iteration no\nelements have been swapped then the array is sorted.\nTime " +
-                        "complexity:\t• best case: O(n)\t• worst case: O(n²)");
-                case "Insertion sort" -> tooltip.setText("Sorts the array by building a new ordered array, in which\n" +
-                        "each element is inserted the right place.\n" + "Time complexity:\t• best case: O(n)\t• " +
-                        "worst case: O(n²)");
-                case "Quick sort" -> tooltip.setText("Sorts the array by partitioning it in two sub-arrays, delimited\n" +
-                        "by a pivot element. The first sub-array contains only elements\nless than or equal to the pivot." +
-                        " while the second sub-array contains\nonly elements larger then the pivot. The two sub-arrays" +
-                        " can then be\nordered apart by applying the same procedure. The algorithm is\nrecursive, the" +
-                        "trivial case consists of a sub-array of one element.\nTime complexity:\t• best case: O(n log" +
-                        " n)\t• worst case: O(n²)");
-                case "Merge sort" -> tooltip.setText("A different version of the quick. Sorts the array by" +
-                        " partitioning\nit in two sub-arrays having the same size, sorting them apart\nand then " +
-                        "finally merging them.\nTime complexity:\t• best case: O(n log n)\t• worst case: O(n log n)");
+                case "Bubble sort" -> tooltip.setText("""
+                        Sorts the array by iterating on it. With each iteration compares
+                        each pair of adjacent elements, swapping them if they're in the
+                        wrong order. At the end of each iteration the max element will be at
+                        the end of the considered sub-array. If during an iteration no
+                        elements have been swapped then the array is sorted.
+                        Time complexity:\t• best case: O(n)\t• worst case: O(n²)""");
+                case "Cocktail sort" -> tooltip.setText("Sì ma di Miguel");
+                case "Insertion sort" -> tooltip.setText("""
+                        Sorts the array by building a new ordered array, in which
+                        each element is inserted the right place.
+                        Time complexity:\t• best case: O(n)\t• worst case: O(n²)""");
+                case "Merge sort" -> tooltip.setText("""
+                        A different version of the quick. Sorts the array by partitioning
+                        it in two sub-arrays having the same size, sorting them apart and then finally merging them.
+                        Time complexity:\t• best case: O(n log n)\t• worst case: O(n log n)""");
+                case "Quick sort" -> tooltip.setText("""
+                        Sorts the array by partitioning it in two sub-arrays, delimited
+                        by a pivot element. The first sub-array contains only elements
+                        less than or equal to the pivot. while the second sub-array contains
+                        only elements larger then the pivot. The two sub-arrays can then be\n
+                        ordered apart by applying the same procedure. The algorithm is
+                        recursive, the trivial case consists of a sub-array of one element.\n
+                        Time complexity:\t• best case: O(n log n)\\t• worst case: O(n²)""");
+                case "Selection sort" -> tooltip.setText("""
+                        Sorts the array by dividing it in two parts: a sorted sub-array which
+                        is built up from right to left and and a sub-array of the remaining
+                        unsorted elements that occupy the rest of the array.
+                        Time complexity:\t• best case: O(n²)\\t• worst case: O(n²)""");
             }
             tooltip.setStyle("-fx-background-color: grey");
             tooltip.setStyle("-fx-show-duration: 40s");

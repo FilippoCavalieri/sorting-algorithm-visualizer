@@ -3,7 +3,19 @@ package com.example.sortingalgorithmvisualizator;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
+/**
+ * Implements the selection sort algorithm.
+ *
+ * @see "https://en.wikipedia.org/wiki/Selection_sort"
+ */
 public class SelectionSort extends SortingAlgorithm {
+
+    /**
+     * Sorts the given list.
+     *
+     * @param list the ObservableList we want to sort
+     * @param elementsColor the default color of the list's element
+     */
     public static void selectionSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         int maxIndex;
         for (int listSize = list.size(); listSize > 1; listSize--) {
@@ -18,6 +30,15 @@ public class SelectionSort extends SortingAlgorithm {
         list.get(0).getNode().setStyle(LIGHT_LIME);
     }
 
+    /**
+     * Finds the index of the max value inside a sublist of the given list.
+     *
+     * @param list the ObservableList of which we want to discover the max value
+     * @param range determines the portion of the list we want to examine
+     * @param elementsColor the default color of the list's element
+     *
+     * @return the index of the max value
+     */
     private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range, String elementsColor) {
         int maxIndex = 0; // Hp: first element is the max
         list.get(maxIndex).getNode().setStyle(YELLOW);
@@ -29,8 +50,7 @@ public class SelectionSort extends SortingAlgorithm {
                 delay();
                 maxIndex = i;
                 list.get(maxIndex).getNode().setStyle(YELLOW);
-            }
-            else{
+            } else {
                 list.get(i).getNode().setStyle(elementsColor);
             }
         }

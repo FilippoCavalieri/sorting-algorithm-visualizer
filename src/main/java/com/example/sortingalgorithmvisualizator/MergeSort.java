@@ -6,11 +6,31 @@ import javafx.scene.chart.XYChart;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements the merge sort algorithm. It's a recursive algorithm.
+ *
+ * @see "https://en.wikipedia.org/wiki/Merge_sort"
+ */
 public class MergeSort extends SortingAlgorithm {
+
+    /**
+     * Sorts the given list.
+     *
+     * @param list the ObservableList we want to sort
+     * @param elementsColor the default color of the list's element
+     */
     public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         mergeSortRec(list, 0, list.size() - 1, elementsColor);
     }
 
+    /**
+     * Sorts recursively the given list.
+     *
+     * @param list the Observable list we want to sort
+     * @param first the index of the first element of the currently considered sublist
+     * @param last the index of the last element of the currently considered sublist
+     * @param elementsColor the default color of the list's element
+     */
     private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last,
                                      String elementsColor) {
         int mid;
@@ -24,6 +44,15 @@ public class MergeSort extends SortingAlgorithm {
         }
     }
 
+    /**
+     * Merges the elements of the two sublist included in the given list so that they're ordered.
+     *
+     * @param list the ObservableList whose sublists we want to merge
+     * @param first the index of the first element of the first sublist
+     * @param mid the index of the last element of the first sublist
+     * @param last the index of the last element of the second sublist
+     * @param elementsColor the default color of the list's element
+     */
     private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int first, int mid,
                                        int last, String elementsColor) {
         int i = first, j = mid + 1, k = first;
