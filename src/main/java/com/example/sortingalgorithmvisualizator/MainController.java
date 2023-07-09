@@ -2,7 +2,6 @@ package com.example.sortingalgorithmvisualizator;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -45,17 +44,12 @@ public class MainController {
     private static final int MAX_DELAY = 1000;
     private static final double MIN_DELAY_SIZE_RATIO= 0.25;
 
-    private static final String RUBY = "-fx-background-color: #CC0066";
-    private static final String LIGHT_LIME = "-fx-background-color: #99FF99";
-    private static final String CYAN = "-fx-background-color: #3399FF";
-    private static final String YELLOW = "-fx-background-color: #FFFF00";
-
 
     private BarChart<String, Number> barChart;
     private CategoryAxis xAxis;
     private NumberAxis yAxis;
     private static int barsNumber, valueRange;
-    private static long currentDelay;
+    static long currentDelay;
     private String sortingAlgorithm;
 
     @FXML
@@ -96,7 +90,6 @@ public class MainController {
         });
 
         delayPicker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
             if(newValue.length() < 1){
                 delayPicker.getEditor().setText("");
             }
@@ -124,7 +117,8 @@ public class MainController {
             delaySpinner.setValue(Math.toIntExact(currentDelay));
         });
 
-        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Selection sort", "Bubble sort", "Insertion sort", "Quick sort", "Merge sort"));
+        sortingAlgorithmChoice.setItems(FXCollections.observableArrayList("Bogo sort", "Selection sort", "Bubble " +
+                "sort", "Cocktail sort", "Insertion sort", "Heap sort", "Quick sort", "Merge sort"));
     }
 
     public void initializeBarChart() {
@@ -150,15 +144,7 @@ public class MainController {
         pane.setCenter(barChart);
 
         for (int i = 0; i < barsNumber; i++)
-            series.getData().get(i).getNode().setStyle(RUBY);
-    }
-
-    private static void delay() {
-        try {
-            Thread.sleep(currentDelay);
-        } catch (InterruptedException ignored) {
-
-        }
+            series.getData().get(i).getNode().setStyle(SortingAlgorithm.RUBY);
     }
 
     @FXML
@@ -168,6 +154,7 @@ public class MainController {
         sortButton.setDisable(false);
         timeElapsedLabel.setVisible(false);
         timeElapsedValueLabel.setVisible(false);
+        delayPicker.setEditable(true);
     }
 
     @FXML
@@ -185,15 +172,18 @@ public class MainController {
                 try {
                     long startTime = System.nanoTime();
                     switch (sortingAlgorithm) {
-                        case "Selection sort" -> SortingAlgorithms.selectionSort(barChart.getData().get(0).getData());
-                        case "Bubble sort" -> SortingAlgorithms.bubbleSort(barChart.getData().get(0).getData());
-                        case "Insertion sort" -> SortingAlgorithms.insertionSort(barChart.getData().get(0).getData());
-                        case "Quick sort" -> SortingAlgorithms.quickSort(barChart.getData().get(0).getData());
-                        case "Merge sort" -> SortingAlgorithms.mergeSort(barChart.getData().get(0).getData());
+                        case "Selection sort" -> SelectionSort.selectionSort(barChart.getData().get(0).getData());
+                        case "Bubble sort" -> BubbleSort.bubbleSort(barChart.getData().get(0).getData());
+                        case "Insertion sort" -> InsertionSort.insertionSort(barChart.getData().get(0).getData());
+                        case "Quick sort" -> QuickSort.quickSort(barChart.getData().get(0).getData());
+                        case "Merge sort" -> MergeSort.mergeSort(barChart.getData().get(0).getData());
+                        case "Bogo sort" -> BogoSort.bogoSort(barChart.getData().get(0).getData());
+                        case "Cocktail sort" -> CocktailSort.cocktailSort(barChart.getData().get(0).getData());
+                        case "Heap sort" -> HeapSort.heapSort(barChart.getData().get(0).getData());
                         default -> throw new Exception();
                     }
                     Platform.runLater(() -> {
-                        timeElapsedValueLabel.setText(Long.toString(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime)) + " s");
+                        timeElapsedValueLabel.setText(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime) + " s");
                         timeElapsedLabel.setVisible(true);
                         timeElapsedValueLabel.setVisible(true);
                         delayPicker.setEditable(true);
@@ -221,191 +211,6 @@ public class MainController {
         alert.setContentText("Please select an algorithm in the check box.");
         alert.getDialogPane().setGraphic(new ImageView(new Image(String.valueOf(this.getClass().getResource("icons/warning_icon.png")))));
         alert.showAndWait();
-    }
-
-    public static class SortingAlgorithms {
-        private static void swap(ObservableList<XYChart.Data<String, Number>> list, int index1, int index2) {
-            Number tmp = list.get(index2).getYValue();
-            list.get(index2).setYValue(list.get(index1).getYValue());
-            list.get(index1).setYValue(tmp);
-        }
-
-        private static int findMax(ObservableList<XYChart.Data<String, Number>> list, int range) {
-            int maxIndex = 0; //Hp: first element is the max
-            list.get(maxIndex).getNode().setStyle(YELLOW);
-            for (int i = 1; i < range; ++i) {
-                list.get(i).getNode().setStyle(CYAN);
-                delay();
-                if (list.get(i).getYValue().intValue() > list.get(maxIndex).getYValue().intValue()) {
-                    list.get(maxIndex).getNode().setStyle(RUBY);
-                    delay();
-                    maxIndex = i;
-                    list.get(maxIndex).getNode().setStyle(YELLOW);
-                }
-                else{
-                    list.get(i).getNode().setStyle(RUBY);
-                }
-            }
-            return maxIndex;
-        }
-
-        public static void selectionSort(ObservableList<XYChart.Data<String, Number>> list) {
-            int maxIndex;
-            for (int listSize = list.size(); listSize > 1; listSize--) {
-                maxIndex = findMax(list, listSize);
-                if (maxIndex < listSize - 1) {
-                    delay();
-                    swap(list, maxIndex, listSize - 1);
-                    list.get(maxIndex).getNode().setStyle(RUBY);
-                }
-                list.get(listSize - 1).getNode().setStyle(LIGHT_LIME);
-            }
-            list.get(0).getNode().setStyle(LIGHT_LIME);
-        }
-
-        public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list) {
-            boolean ordered = false;
-            int listSize = list.size();
-            for (; listSize > 1 && !ordered; listSize--) {
-                ordered = true; //Hp: the list is ordered
-                for (int i = 0; i < listSize - 1; i++) {
-                    list.get(i).getNode().setStyle(CYAN);
-                    list.get(i + 1).getNode().setStyle(CYAN);
-                    delay();
-                    if (list.get(i).getYValue().intValue() >= list.get(i + 1).getYValue().intValue()) {
-                        swap(list, i, i + 1);
-                        ordered = false;
-                    }
-                    list.get(i).getNode().setStyle(RUBY);
-                    list.get(i + 1).getNode().setStyle(RUBY);
-                }
-                list.get(listSize - 1).getNode().setStyle(LIGHT_LIME);
-            }
-            for(int i = listSize; i >= 0; i--){
-                delay();
-                list.get(i).getNode().setStyle(LIGHT_LIME);
-            }
-        }
-
-        private static void insertMin(ObservableList<XYChart.Data<String, Number>> list, int lastPos) {
-            int i, lastValue = list.get(lastPos).getYValue().intValue();
-            for (i = lastPos - 1; i >= 0 && lastValue < list.get(i).getYValue().intValue(); i--) {
-                list.get(i).getNode().setStyle(CYAN);
-                list.get(i + 1).getNode().setStyle(CYAN);
-                delay();
-                swap(list, i + 1, i);
-                list.get(i).getNode().setStyle(LIGHT_LIME);
-                list.get(i + 1).getNode().setStyle(LIGHT_LIME);
-            }
-            list.get(i + 1).setYValue(lastValue);
-        }
-
-        public static void insertionSort(ObservableList<XYChart.Data<String, Number>> list) {
-            for (int i = 1; i < list.size(); i++) {
-                insertMin(list, i);
-            }
-        }
-
-        private static void quickSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
-            int pivot, i, j, pivotIndex;
-            if (first < last) {
-                for(int k = first; k <= last; k++){
-                    list.get(k).getNode().setStyle(LIGHT_LIME);
-                }
-                i = first;
-                j = last;
-                pivotIndex = (first + last) / 2;
-                pivot = list.get(pivotIndex).getYValue().intValue();
-                list.get(pivotIndex).getNode().setStyle(YELLOW);
-                do {
-                    for (; list.get(i).getYValue().intValue() < pivot; i++);
-                    for (; list.get(j).getYValue().intValue() > pivot; j--);
-
-                    if (i <= j) {
-                        list.get(i).getNode().setStyle(CYAN);
-                        list.get(j).getNode().setStyle(CYAN);
-                        delay();
-                        swap(list, i, j);
-                        list.get(i).getNode().setStyle(LIGHT_LIME);
-                        list.get(j).getNode().setStyle(LIGHT_LIME);
-                        list.get(pivotIndex).getNode().setStyle(YELLOW);
-                        i++;
-                        j--;
-                    }
-                } while (i <= j);
-                for(int k = first; k <= last; k++){
-                    list.get(k).getNode().setStyle(RUBY);
-                }
-                quickSortRec(list, first, j);
-                quickSortRec(list, i, last);
-            }
-        }
-
-        public static void quickSort(ObservableList<XYChart.Data<String, Number>> list) {
-            quickSortRec(list, 0, list.size() - 1);
-        }
-
-        private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int first, int mid, int last) {
-            int i = first, j = mid + 1, k = first;
-            List<Number> tmp = new ArrayList<>();
-
-            for (XYChart.Data<String, Number> data : list) {
-                tmp.add(data.getYValue());
-            }
-            for(int y = first; y <= last; y++){
-                list.get(y).getNode().setStyle(LIGHT_LIME);
-            }
-            while (i <= mid && j <= last) {
-                if ((int) tmp.get(i) < (int) tmp.get(j)) {
-                    list.get(k).getNode().setStyle(CYAN);
-                    delay();
-                    list.get(k).setYValue(tmp.get(i));
-                    list.get(k).getNode().setStyle(LIGHT_LIME);
-                    i++;
-                    k++;
-                } else {
-                    list.get(k).getNode().setStyle(CYAN);
-                    delay();
-                    list.get(k).setYValue(tmp.get(j));
-                    list.get(k).getNode().setStyle(LIGHT_LIME);
-                    j++;
-                    k++;
-                }
-            }
-            for (; i <= mid; i++) {
-                list.get(k).getNode().setStyle(CYAN);
-                delay();
-                list.get(k).setYValue(tmp.get(i));
-                list.get(k).getNode().setStyle(LIGHT_LIME);
-                k++;
-            }
-            for (; j <= last; j++) {
-                list.get(k).getNode().setStyle(CYAN);
-                delay();
-                list.get(k).setYValue(tmp.get(j));
-                list.get(k).getNode().setStyle(LIGHT_LIME);
-                k++;
-            }
-            for(int y = first; y <= last; y++){
-                list.get(y).getNode().setStyle(RUBY);
-            }
-        }
-
-        private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last) {
-            int mid;
-            if (first < last) {
-                mid = (first + last) / 2;
-
-                mergeSortRec(list, first, mid);
-                mergeSortRec(list, mid + 1, last);
-
-                mergeOperation(list, first, mid, last);
-            }
-        }
-
-        public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list) {
-            mergeSortRec(list, 0, list.size() - 1);
-        }
     }
 
     @FXML
