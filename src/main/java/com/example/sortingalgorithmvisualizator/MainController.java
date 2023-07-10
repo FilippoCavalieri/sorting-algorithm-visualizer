@@ -278,6 +278,7 @@ public class MainController {
                         """);
                 case "Heap sort" -> tooltip.setText("""
                         Sorts the array by using an heap sort data structure.
+                        Time complexity:\t• best case: O(n*log n)\t• worst case: O(n*log n)
                         """);
                 case "Insertion sort" -> tooltip.setText("""
                         Sorts the array by building a new ordered array, in which
@@ -287,22 +288,27 @@ public class MainController {
                 case "Merge sort" -> tooltip.setText("""
                         A different version of the quick sort. Sorts the array by partitioning
                         it in two sub-arrays having the same size, sorting them apart and then finally merging them.
-                        Time complexity:\t• best case: O(n log n)\t• worst case: O(n log n)
+                        Time complexity:\t• best case: O(n*log n)\t• worst case: O(n*log n)
                         """);
                 case "Quick sort" -> tooltip.setText("""
                         Sorts the array by partitioning it in two sub-arrays, delimited
                         by a pivot element. The first sub-array contains only elements
                         less than or equal to the pivot. while the second sub-array contains
-                        only elements larger then the pivot. The two sub-arrays can then be\n
+                        only elements larger then the pivot. The two sub-arrays can then be
                         ordered apart by applying the same procedure. The algorithm is
-                        recursive, the trivial case consists of a sub-array of one element.\n
-                        Time complexity:\t• best case: O(n log n)\\t• worst case: O(n²)
+                        recursive, the trivial case consists of a sub-array of one element.
+                        Time complexity:\t• best case: O(n*log n)\t• worst case: O(n²)
+                        """);
+                case "Radix sort" -> tooltip.setText("""
+                        A non-comparative sorting algorithm. Sorts the elements by processing them digit by digit.
+                        Time complexity:\t• best case: O(k*n)\t• worst case: O(k*n)
+                        (k is the average of the number of digits of the elements)                                                    
                         """);
                 case "Selection sort" -> tooltip.setText("""
                         Sorts the array by dividing it in two parts: a sorted sub-array which
                         is built up from right to left and and a sub-array of the remaining
                         unsorted elements that occupy the rest of the array.
-                        Time complexity:\t• best case: O(n²)\\t• worst case: O(n²)
+                        Time complexity:\t• best case: O(n²)\t• worst case: O(n²)
                         """);
             }
             tooltip.setStyle("-fx-background-color: grey");
