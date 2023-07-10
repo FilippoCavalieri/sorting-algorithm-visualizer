@@ -1,6 +1,8 @@
 # Sorting algorithm visualizer 
 
-## A Java written GUI application to visualize sorting algorithms at work.  
+## A Java written GUI application to visualize sorting algorithms at work
+
+![image](https://github.com/FilippoCavalieri/sorting-algorithm-visualizer/assets/102852466/92c0a246-1679-4100-85ea-43d5535b864c)
 
 You can select between 8 kinds of sorting algorithms:
 * Bubble sort
@@ -12,6 +14,8 @@ You can select between 8 kinds of sorting algorithms:
 * Radix sort
 * Selection sort
 
-
-![image](https://github.com/FilippoCavalieri/sorting-algorithm-visualizer/assets/102852466/92c0a246-1679-4100-85ea-43d5535b864c)
-
+Furthermore, you can modify the following features:
+- array size
+- array elements range of values
+- sorting algorithm delay
+- array elements color
