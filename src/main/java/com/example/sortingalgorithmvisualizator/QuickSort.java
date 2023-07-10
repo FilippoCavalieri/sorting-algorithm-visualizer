@@ -14,7 +14,7 @@ public class QuickSort extends SortingAlgorithm {
      * Sorts the given list.
      *
      * @param list the ObservableList we want to sort
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     public static void quickSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         quickSortRec(list, 0, list.size() - 1, elementsColor);
@@ -26,7 +26,7 @@ public class QuickSort extends SortingAlgorithm {
      * @param list the Observable list we want to sort
      * @param first the index of the first element of the currently considered sublist
      * @param last the index of the last element of the currently considered sublist
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     private static void quickSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last, String elementsColor) {
         int pivot, i, j, pivotIndex;

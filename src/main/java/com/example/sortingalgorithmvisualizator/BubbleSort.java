@@ -14,7 +14,7 @@ public class BubbleSort extends SortingAlgorithm {
      * Sorts the given list.
      *
      * @param list the ObservableList we want to sort
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     public static void bubbleSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         boolean ordered = false;

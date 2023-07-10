@@ -14,7 +14,7 @@ public class SelectionSort extends SortingAlgorithm {
      * Sorts the given list.
      *
      * @param list the ObservableList we want to sort
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     public static void selectionSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         int maxIndex;
@@ -35,7 +35,7 @@ public class SelectionSort extends SortingAlgorithm {
      *
      * @param list the ObservableList of which we want to discover the max value
      * @param range determines the portion of the list we want to examine
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      *
      * @return the index of the max value
      */

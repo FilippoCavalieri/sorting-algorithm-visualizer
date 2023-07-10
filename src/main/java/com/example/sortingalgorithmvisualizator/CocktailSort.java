@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
  * Implements the cocktail sort algorithm.
  *
  * @see "https://it.wikipedia.org/wiki/Shaker_sort"
+ * @see "https://www.geeksforgeeks.org/cocktail-sort/"
  */
 public class CocktailSort extends SortingAlgorithm {
 
@@ -14,7 +15,7 @@ public class CocktailSort extends SortingAlgorithm {
      * Sorts the given list.
      *
      * @param list the ObservableList we want to sort
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     public static void cocktailSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         boolean swapped;
@@ -61,6 +62,7 @@ public class CocktailSort extends SortingAlgorithm {
         } while (swapped);
 
         for (int i = start; i <= end; i++) {
+            delay();
             list.get(i).getNode().setStyle(LIGHT_LIME);
         }
     }

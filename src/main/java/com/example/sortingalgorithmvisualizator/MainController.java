@@ -277,7 +277,7 @@ public class MainController {
                         Time complexity:\t• best case: O(n)\t• worst case: O(n²)
                         """);
                 case "Heap sort" -> tooltip.setText("""
-                        Here's the story of the Hurricane
+                        Sorts the array by using an heap sort data structure.
                         """);
                 case "Insertion sort" -> tooltip.setText("""
                         Sorts the array by building a new ordered array, in which

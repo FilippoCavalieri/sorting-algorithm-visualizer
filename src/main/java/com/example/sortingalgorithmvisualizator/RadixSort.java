@@ -16,7 +16,7 @@ public class RadixSort extends SortingAlgorithm {
     public static void radixSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor)
     {
         int max = getMax(list);
-        String[] colors = new String[]{CYAN, LIGHT_LIME, RED};
+        String[] colors = new String[]{CYAN, YELLOW, LIGHT_LIME, RED };
         for (int exp = 1, i = 0; max / exp > 0; exp *= 10, i++)
             countSort(list, exp, colors[i]);
 

@@ -17,7 +17,7 @@ public class MergeSort extends SortingAlgorithm {
      * Sorts the given list.
      *
      * @param list the ObservableList we want to sort
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     public static void mergeSort(ObservableList<XYChart.Data<String, Number>> list, String elementsColor) {
         mergeSortRec(list, 0, list.size() - 1, elementsColor);
@@ -29,7 +29,7 @@ public class MergeSort extends SortingAlgorithm {
      * @param list the Observable list we want to sort
      * @param first the index of the first element of the currently considered sublist
      * @param last the index of the last element of the currently considered sublist
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     private static void mergeSortRec(ObservableList<XYChart.Data<String, Number>> list, int first, int last,
                                      String elementsColor) {
@@ -51,7 +51,7 @@ public class MergeSort extends SortingAlgorithm {
      * @param first the index of the first element of the first sublist
      * @param mid the index of the last element of the first sublist
      * @param last the index of the last element of the second sublist
-     * @param elementsColor the default color of the list's element
+     * @param elementsColor the default color of the list's elements
      */
     private static void mergeOperation(ObservableList<XYChart.Data<String, Number>> list, int first, int mid,
                                        int last, String elementsColor) {
