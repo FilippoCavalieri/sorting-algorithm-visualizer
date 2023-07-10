@@ -1,6 +1,6 @@
 # Sorting algorithm visualizer 
 
-A Java written GUI application to visualize sorting algorithms at work.
+A Java written GUI application to visualize sorting algorithms at work.\n
 You can select between 8 kinds of sorting algorithms:
 * Bubble sort
 * Cocktail sort
