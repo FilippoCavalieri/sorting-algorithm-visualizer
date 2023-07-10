@@ -156,8 +156,11 @@ public class MainController {
         sortButton.setDisable(false);
         timeElapsedLabel.setVisible(false);
         timeElapsedValueLabel.setVisible(false);
+        delayPicker.setEditable(true);
+        delayPicker.setDisable(false);
+        arraySizeSlider.setDisable(false);
+        arrayRangeSlider.setDisable(false);
     }
-
     @FXML
     public void handleSort() {
         delayPicker.setDisable(true);
@@ -174,7 +177,8 @@ public class MainController {
                 try {
                     long startTime = System.nanoTime();
                     switch (sortingAlgorithm) {
-                        case "Bubble sort" -> BubbleSort.bubbleSort(barChart.getData().get(0).getData(), selectedColor);
+                        case "Bubble sort" -> BubbleSort.bubbleSort(barChart.getData().get(0).getData(),
+                                selectedColor);
                         case "Cocktail sort" ->
                                 CocktailSort.cocktailSort(barChart.getData().get(0).getData(), selectedColor);
                         case "Heap sort" -> HeapSort.heapSort(barChart.getData().get(0).getData(), selectedColor);
@@ -192,10 +196,6 @@ public class MainController {
                             timeElapsedValueLabel.setText(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startTime) + " s");
                             timeElapsedLabel.setVisible(true);
                             timeElapsedValueLabel.setVisible(true);
-                            delayPicker.setEditable(true);
-                            delayPicker.setDisable(false);
-                            arraySizeSlider.setDisable(false);
-                            arrayRangeSlider.setDisable(false);
                         }
                     });
                 } catch (NullPointerException ignored) {
